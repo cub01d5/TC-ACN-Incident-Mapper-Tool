@@ -1,0 +1,2203 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TC-ACN-Incident-Mapper-Tool</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js" integrity="sha384-ZZ1pncU3bQe8y31yfZdMFdSpttDoPmOZg2wguVK9almUodir1PghgT0eY7Mrty8H" crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <header>
+    <div class="nav-container">
+      <div class="nav-left">
+        <h1>TC-ACN-Incident-Mapper-Tool</h1>
+        <div class="nav-links">
+          <button class="nav-tab active" data-target="tab-manual">Mapping Manuale</button>
+          <button class="nav-tab" data-target="tab-builder">AI Vector Builder</button>
+          <button class="nav-tab" data-target="tab-populate">Popola Vettori</button>
+          <button class="nav-tab" data-target="tab-info">Info & Risorse</button>
+        </div>
+      </div>
+      <div class="nav-right">
+        <div class="nav-theme-toggle">
+          <label class="theme-toggle" title="Toggle light / dark theme">
+            <span>☀️</span>
+            <input type="checkbox" id="themeToggle" />
+            <span>🌙</span>
+          </label>
+        </div>
+        <button class="btn-settings" id="openSettings" title="Impostazioni AI">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.1a2 2 0 0 1-1-1.72v-.51a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path>
+            <circle cx="12" cy="12" r="3"></circle>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="wrap">
+
+      <!-- TAB 1: Mapping Manuale -->
+      <div id="tab-manual" class="main-tab-content active">
+        <div class="layout-2col">
+
+          <div class="col-left">
+            <form id="acnForm" class="grid acn-form" onsubmit="event.preventDefault()">
+              <!-- Baseline Characterization -->
+              <div class="card bc">
+                <h2>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path
+                      d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+                    </path>
+                    <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                    <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                  </svg>
+                  Baseline Characterization (BC)
+                </h2>
+                <div class="grid col-4">
+                  <label>
+                    <span>Severity:</span>
+                    <select name="severity">
+                      <option value="">nessuno</option>
+                      <option value="HI">High</option>
+                      <option value="ME">Medium</option>
+                      <option value="LO">Low</option>
+                      <option value="NO">None</option>
+                    </select>
+                  </label>
+                  <label>
+                    <span>Impact:</span>
+                    <select name="impact">
+                      <option value="">nessuno</option>
+                      <option value="AC">Account Compromise</option>
+                      <option value="AP">Application Compromise</option>
+                      <option value="AV">Availability</option>
+                      <option value="DX">Data Exfiltration</option>
+                      <option value="DE">Data Exposure</option>
+                      <option value="DM">Data Manipulation</option>
+                      <option value="NO">No Impact</option>
+                      <option value="SY">System Compromise</option>
+                      <option value="OT">Other</option>
+                    </select>
+                  </label>
+                  <label>
+                    <span>Root Cause:</span>
+                    <select name="rootCause">
+                      <option value="">nessuno</option>
+                      <option value="HU">Human errors</option>
+                      <option value="MA">Malicious Actions</option>
+                      <option value="NA">Natural Phenomena</option>
+                      <option value="SY">System Failure</option>
+                      <option value="TH">Third Party Failure</option>
+                    </select>
+                  </label>
+                  <label>
+                    <span>Victim Geo.:</span>
+                    <select name="victimGeography">
+                      <option value="">nessuno</option>
+                      <option value="IT">Italy</option>
+                      <option value="AF">Africa</option>
+                      <option value="AM">America</option>
+                      <option value="AN">Antarctica</option>
+                      <option value="AS">Asia</option>
+                      <option value="EU">Europe</option>
+                      <option value="OC">Oceania</option>
+                      <option value="GL">Global</option>
+                    </select>
+                  </label>
+                </div>
+              </div>
+
+              <!-- Threat Type -->
+              <div class="card tt">
+                <h2>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                  </svg>
+                  Threat Type (TT)
+                </h2>
+                <div class="grid col-4">
+                  <label>
+                    <span>Active Scanning:</span>
+                    <select name="activeScanning">
+                      <option value="">nessuno</option>
+                      <option value="CR">Credential Scanning</option>
+                      <option value="NE">Network Scanning</option>
+                      <option value="VU">Vulnerability Scanning</option>
+                      <option value="OT">Other</option>
+                    </select>
+                  </label>
+                  <label>
+                    <span>Availability:</span>
+                    <select name="availability">
+                      <option value="">nessuno</option>
+                      <option value="DA">Data Encryption</option>
+                      <option value="DD">DDoS</option>
+                      <option value="DO">DoS</option>
+                      <option value="MI">Misconfiguration</option>
+                      <option value="OU">Outage</option>
+                      <option value="OT">Other</option>
+                    </select>
+                  </label>
+                  <label>
+                    <span>Fraud:</span>
+                    <select name="fraud">
+                      <option value="">nessuno</option>
+                      <option value="BR">Brand Abuse</option>
+                      <option value="EX">Extortion</option>
+                      <option value="MA">Masquerade</option>
+                      <option value="RE">Resource misuse</option>
+                      <option value="SP">Spam</option>
+                      <option value="OT">Other</option>
+                    </select>
+                  </label>
+                  <label>
+                    <span>Brand Abuse:</span>
+                    <select name="brandAbuse">
+                      <option value="">nessuno</option>
+                      <option value="AI">Account Impersonation</option>
+                      <option value="CS">Cybersquatting</option>
+                      <option value="NI">Name Logo Impersonation</option>
+                      <option value="TS">Typosquatting</option>
+                      <option value="OT">Other</option>
+                    </select>
+                  </label>
+                  <label>
+                    <span>Data Exposure:</span>
+                    <select name="dataExposure">
+                      <option value="">nessuno</option>
+                      <option value="AU">Authentication Data</option>
+                      <option value="BU">Business Data</option>
+                      <option value="FI">Financial Data</option>
+                      <option value="PD">Personal Data</option>
+                      <option value="OT">Other</option>
+                    </select>
+                  </label>
+                  <label>
+                    <span>Gathering:</span>
+                    <select name="informationGathering">
+                      <option value="">nessuno</option>
+                      <option value="AC">Active Scanning</option>
+                      <option value="SN">Sniffing</option>
+                      <option value="SO">Social Engineering</option>
+                      <option value="OT">Other</option>
+                    </select>
+                  </label>
+                  <label>
+                    <span>Malicious Code:</span>
+                    <select name="maliciousCode">
+                      <option value="">nessuno</option>
+                      <option value="BA">Backdoor</option>
+                      <option value="BK">Banker</option>
+                      <option value="BO">Bot</option>
+                      <option value="CO">Coin Miner</option>
+                      <option value="EX">Exploit Kit</option>
+                      <option value="HA">Hacking Tool</option>
+                      <option value="IN">Info Stealer</option>
+                      <option value="LO">Loader</option>
+                      <option value="PO">PUP</option>
+                      <option value="RA">Ransomware</option>
+                      <option value="RE">RAT</option>
+                      <option value="RO">Rootkit</option>
+                      <option value="TR">Trojan</option>
+                      <option value="VI">Virus</option>
+                      <option value="WE">Webshell</option>
+                      <option value="WI">Wiper</option>
+                      <option value="WO">Worm</option>
+                      <option value="UN">Unknown</option>
+                    </select>
+                  </label>
+                  <label>
+                    <span>Soc. Eng.:</span>
+                    <select name="socialEngineering">
+                      <option value="">nessuno</option>
+                      <option value="BA">Baiting</option>
+                      <option value="PH">Phishing</option>
+                      <option value="SM">Smishing</option>
+                      <option value="SP">Spear-Phishing</option>
+                      <option value="VI">Vishing</option>
+                      <option value="WA">Watering-Hole</option>
+                      <option value="OT">Other</option>
+                    </select>
+                  </label>
+                  <label>
+                    <span>Vulnerability:</span>
+                    <select name="vulnerability">
+                      <option value="">nessuno</option>
+                      <option value="0-">0-Day</option>
+                      <option value="N-">n-Day</option>
+                      <option value="SE">Misconfig</option>
+                      <option value="UN">Exposed Svc</option>
+                      <option value="WE">Weak Crypto</option>
+                      <option value="PC">PoC</option>
+                      <option value="OT">Other</option>
+                    </select>
+                  </label>
+                </div>
+              </div>
+
+              <!-- Threat Actor -->
+              <div class="card ta">
+                <h2>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                  </svg>
+                  Threat Actor (TA)
+                </h2>
+                <div class="grid col-4">
+                  <label>
+                    <span>Motivation:</span>
+                    <select name="adversaryMotivation">
+                      <option value="">nessuno</option>
+                      <option value="DE">Destruction</option>
+                      <option value="ES">Espionage</option>
+                      <option value="ID">Ideology</option>
+                      <option value="IN">Influence</option>
+                      <option value="PR">Profit</option>
+                      <option value="OT">Other</option>
+                    </select>
+                  </label>
+                  <label>
+                    <span>Actor Type:</span>
+                    <select name="adversaryType">
+                      <option value="">nessuno</option>
+                      <option value="CR">Criminal</option>
+                      <option value="HA">Hacktivist</option>
+                      <option value="IN">Insider</option>
+                      <option value="NA">Nation State</option>
+                    </select>
+                  </label>
+                </div>
+              </div>
+
+              <!-- Additional Context -->
+              <div class="card ac">
+                <h2>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                  </svg>
+                  Additional Context (AC)
+                </h2>
+                <div class="grid col-4">
+                  <label>
+                    <span>Abusive Content:</span>
+                    <select name="abusiveContent">
+                      <option value="">nessuno</option>
+                      <option value="DI">Disturbing Content</option>
+                      <option value="HA">Harmful Speech</option>
+                      <option value="OT">Other</option>
+                    </select>
+                  </label>
+                  <label>
+                    <span>Asset Source Geo.:</span>
+                    <select name="assetSourceGeography">
+                      <option value="">nessuno</option>
+                      <option value="IT">Italy</option>
+                      <option value="OT">Other</option>
+                    </select>
+                  </label>
+                  <label>
+                    <span>Involved Asset:</span>
+                    <select name="involvedAsset">
+                      <option value="">nessuno</option>
+                      <optgroup label="Network Device">
+                        <option value="HW-ND_RT">Router</option>
+                        <option value="HW-ND_SW">Switch</option>
+                        <option value="HW-ND_AP">Access Point</option>
+                      </optgroup>
+                      <optgroup label="IoT/IIoT">
+                        <option value="HW-IT_DC">Digital Camera</option>
+                      </optgroup>
+                      <optgroup label="Security Appliance">
+                        <option value="HW-SA_FW">Firewall</option>
+                        <option value="HW-SA_HSM">Hardware Security Module</option>
+                      </optgroup>
+                      <optgroup label="Computer System">
+                        <option value="HW-CS_SR">Server</option>
+                        <option value="HW-CS_PRT">Printer</option>
+                        <option value="HW-CS_WS">Workstation</option>
+                        <option value="HW-CS_MD">Mobile Device</option>
+                        <option value="HW-CS_DS">Data Storage</option>
+                      </optgroup>
+                      <optgroup label="OT">
+                        <option value="HW-OT_RTU">Remote Terminal Unit</option>
+                        <option value="HW-OT_HMI">Human Machine Interface</option>
+                        <option value="HW-OT_PLC">Programmable Logic Controller</option>
+                        <option value="HW-OT_FID">Field Device</option>
+                        <option value="HW-OT_IED">Intelligent Elettronic Device</option>
+                      </optgroup>
+                      <optgroup label="Software Security">
+                        <option value="SW-SS_FO">Firewall OS</option>
+                        <option value="SW-SS_AV">Antivirus</option>
+                        <option value="SW-SS_IDS">Intrusion Detection System</option>
+                        <option value="SW-SS_IPS">Intrusion Prevention System</option>
+                        <option value="SW-SS_AS">Antispam</option>
+                        <option value="SW-SS_SIEM">SIEM</option>
+                        <option value="SW-SS_PX">Proxy</option>
+                        <option value="SW-SS_CA">Certification Authority</option>
+                        <option value="SW-SS_VP">VPN</option>
+                        <option value="SW-SS_AM">Access Management</option>
+                        <option value="SW-SS_WAF">WAF</option>
+                      </optgroup>
+                      <option value="OT">Other</option>
+                    </select>
+                  </label>
+                  <label>
+                    <span>Operating System:</span>
+                    <select name="operatingSystem">
+                      <option value="">nessuno</option>
+                      <option value="SW-OS_WIN">Windows</option>
+                      <option value="SW-OS_LX">Linux</option>
+                      <option value="SW-OS_MAC">MacOS</option>
+                      <option value="SW-OS_IOS">iOS</option>
+                      <option value="SW-OS_AND">Android</option>
+                      <option value="SW-OS_FW">Firmware</option>
+                      <option value="SW-OS_OTH">Other</option>
+                    </select>
+                  </label>
+                  <label>
+                    <span>Outlook:</span>
+                    <select name="outlook">
+                      <option value="">nessuno</option>
+                      <option value="IM">Improving</option>
+                      <option value="ST">Stable</option>
+                      <option value="WO">Worsening</option>
+                    </select>
+                  </label>
+                  <label>
+                    <span>Physical Security:</span>
+                    <select name="physicalSecurity">
+                      <option value="">nessuno</option>
+                      <option value="SA">Sabotage</option>
+                      <option value="TH">Theft</option>
+                      <option value="UN">Unauthorized Access</option>
+                      <option value="OT">Other</option>
+                    </select>
+                  </label>
+                  <label>
+                    <span>Vector:</span>
+                    <select name="vector">
+                      <option value="">nessuno</option>
+                      <option value="AB">Abuse of functionality</option>
+                      <option value="CO">Compromised domain</option>
+                      <option value="DR">Drive-by compromise</option>
+                      <option value="EM">E-mail</option>
+                      <option value="EV">Exploiting Vulnerabilities</option>
+                      <option value="EX">External remote services</option>
+                      <option value="HA">Hardware Additions</option>
+                      <option value="SO">Social media</option>
+                      <option value="SU">Supply chain</option>
+                      <option value="VA">Valid accounts</option>
+                      <option value="OT">Other</option>
+                    </select>
+                  </label>
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <div class="col-right">
+            <div class="actions" style="margin-bottom: 2rem;">
+              <button class="btn" id="generateVectorBtn" type="button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                  style="margin-right: 8px;">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                  <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                </svg>
+                Genera Vettore ACN
+              </button>
+              <button class="btn btn--muted" id="resetBtn" type="button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                  style="margin-right: 8px;">
+                  <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"></path>
+                  <path d="M21 3v5h-5"></path>
+                  <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"></path>
+                  <path d="M3 21v-5h5"></path>
+                </svg>
+                Reimposta Modulo
+              </button>
+              <button class="btn btn--secondary" id="exportImageBtn" type="button" disabled>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                  style="margin-right: 8px;">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="7 10 12 15 17 10"></polyline>
+                  <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                Esporta Immagine
+              </button>
+            </div>
+            <div class="result" id="vectorOutputBox">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                <h3 style="margin:0;">Vettore ACN Generato</h3>
+                <button class="btn-copy" id="copyVectorBtn" title="Copia Vettore" disabled>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                  </svg>
+                  Copia
+                </button>
+              </div>
+              <div id="vectorError" class="panel-hint" style="display:none; color: var(--danger); font-weight: 700; margin-bottom: 0.5rem;"></div>
+              <p class="mono" id="vectorString"></p>
+
+              <!-- Collapsible Selection Details -->
+              <details class="selection-details" id="selectionDetails">
+                <summary>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="details-chevron">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
+                  Mostra Dettagli Mappatura
+                </summary>
+                <div id="selectionDescriptions" class="selection-descriptions"></div>
+              </details>
+            </div>
+
+            <!-- Feature 1: Notifica ACN Evaluation -->
+            <div id="reportingEvaluation" class="reporting-eval" style="display:none;">
+              <div class="eval-badge" id="evalBadge">
+                <span class="eval-icon" id="evalIcon"></span>
+                <div class="eval-text">
+                  <strong class="eval-verdict" id="evalVerdict"></strong>
+                  <span class="eval-norm-ref" id="evalNormRef"></span>
+                </div>
+              </div>
+              <div class="eval-body">
+                <p id="evalReason"></p>
+                <div id="evalNorms" class="eval-norms"></div>
+              </div>
+            </div>
+
+            <!-- Integrated AI Summary Section -->
+            <div class="panel-card ai-summary-panel">
+              <div class="panel-body">
+                <h3 class="panel-title" style="display: flex; align-items: center; gap: 8px;">
+                  AI Summary Analysis
+                  <span title="Bring Your Own Key" style="font-size: 0.6rem; background: var(--primary-lighter); color: var(--primary-dark); padding: 0.2rem 0.5rem; border-radius: 12px; font-weight: 700; letter-spacing: 1px;">BYOK</span>
+                </h3>
+                <p class="panel-hint">Ottieni una sintesi narrativa dell'incidente basata sui campi selezionati.<br>
+                  <span style="color: var(--primary-light); display: inline-flex; align-items: center; gap: 4px; margin-top: 4px; font-weight: 600; font-size: 0.85rem;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"></path></svg>
+                    Richiede la tua chiave API (configurala nelle Impostazioni in alto a destra).
+                  </span>
+                </p>
+                <div class="ai-content">
+                  <div id="summaryContent" class="summary-content">
+                    <p class="text-muted">Seleziona i campi e clicca "Genera Sintesi".</p>
+                  </div>
+                  <div style="margin-top: 1rem;">
+                    <button class="btn btn-small" id="generateSummary" disabled>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        style="margin-right:6px">
+                        <path
+                          d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z">
+                        </path>
+                      </svg>
+                      Genera Sintesi AI
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div><!-- /col-right -->
+        </div><!-- /layout-2col -->
+
+      </div><!-- /tab-manual -->
+
+      <!-- TAB 2: AI Vector Builder -->
+      <div id="tab-builder" class="main-tab-content" style="display:none;">
+        <div class="panel-card global-panel">
+          <div class="panel-body">
+            <h2 class="panel-title" style="display: flex; align-items: center; gap: 8px;">
+              AI Vector Builder
+              <span title="Bring Your Own Key" style="font-size: 0.7rem; background: var(--primary-lighter); color: var(--primary-dark); padding: 0.2rem 0.6rem; border-radius: 12px; font-weight: 700; letter-spacing: 1px;">BYOK</span>
+            </h2>
+            <p class="panel-hint">Descrivi l'incidente in linguaggio naturale: l'AI genererà il mapping ACN e popolerà
+              automaticamente il form nella sezione "Mapping Manuale".<br>
+              <span style="color: var(--primary-light); display: inline-flex; align-items: center; gap: 4px; margin-top: 6px; font-weight: 600; font-size: 0.85rem;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"></path></svg>
+                Richiede la configurazione preventiva della tua chiave API personale nel pannello Impostazioni.
+              </span>
+            </p>
+            <textarea id="vectorBuilderInput" class="vector-builder-textarea" rows="8"
+              placeholder="Es: Un ransomware ha cifrato i file server di produzione..."></textarea>
+            <div class="vector-builder-actions">
+              <button class="btn" id="vectorBuilderBtn" type="button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                  style="margin-right:6px">
+                  <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                </svg>
+                Genera Mapping AI
+              </button>
+            </div>
+            <div id="vectorBuilderResult" class="vector-builder-result" style="display:none; margin-top: 1.5rem;">
+              <div class="vb-result-header">
+                <span class="vb-result-label">Mapping suggerito dall'AI:</span>
+                <button class="btn btn--muted btn-small" id="applyVectorBuilderBtn" type="button">Applica al
+                  Form</button>
+              </div>
+              <div id="vectorBuilderOutput" class="vb-output"></div>
+            </div>
+            <div id="vectorBuilderError" class="vb-error" style="display:none;"></div>
+          </div>
+        </div>
+      </div><!-- /tab-builder -->
+
+
+      <!-- TAB 4: Popola Vettori -->
+      <div id="tab-populate" class="main-tab-content" style="display:none;">
+        <div class="panel-card global-panel">
+          <div class="panel-body">
+            <h2 class="panel-title">Popola Form dai Vettori ACN</h2>
+            <p class="panel-hint">Incolla un vettore ACN valido. Lo strumento parserà la stringa e popolerà
+              automaticamente i campi del Mapping Manuale.</p>
+            <textarea id="vectorInput" rows="4"
+              placeholder="Es: [BC:AC/MA/HI/SE], [TT:AC/NO/NO/OT/PD/SO/NO], [TA:FI/OC/CY], [AC:AD/EU/IS/NO/NO/NO/OT]"></textarea>
+            <div class="vector-builder-actions">
+              <button class="btn" id="populateSelectsBtn" type="button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                  style="margin-right:8px">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="17 8 12 3 7 8"></polyline>
+                  <line x1="12" y1="3" x2="12" y2="15"></line>
+                </svg>
+                Popola Campi
+              </button>
+            </div>
+            <p id="reverseError" style="margin-top:0.5rem; color: var(--danger); font-weight: 600;"></p>
+          </div>
+        </div>
+      </div><!-- /tab-populate -->
+      
+      <!-- TAB 5: Info & Risorse -->
+      <div id="tab-info" class="main-tab-content" style="display:none;">
+        <div class="panel-card global-panel">
+          <div class="panel-body">
+            <h2 class="panel-title">Informazioni e Risorse ACN</h2>
+            <p class="panel-hint">Lo strumento <strong>TC-ACN-Incident-Mapper-Tool</strong> è progettato per supportare gli operatori nella mappatura corretta secondo gli standard nazionali di cybersecurity.</p>
+            
+            <div class="info-grid">
+              
+              <div class="info-card">
+                <h3>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                  Documentazione Tassonomia
+                </h3>
+                <p>Scarica la versione integrale (PDF) della Tassonomia degli Eventi Cyber direttamente dal portale ufficiale dell'Agenzia per la Cybersicurezza Nazionale.</p>
+                <a href="https://www.acn.gov.it/portale/documents/20119/552690/ACN_Tassonomia_Cyber_CLEAR.pdf" target="_blank" class="btn btn-small btn--muted" style="text-decoration: none;">
+                  Scarica PDF Ufficiale (ACN)
+                </a>
+              </div>
+
+              <div class="info-card">
+                <h3>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                  Portale Istituzionale ACN
+                </h3>
+                <p>Rimani sempre aggiornato sulle ultime direttive, notifiche e normative vigenti, inclusa la direttiva NIS2 e il D.Lgs. 138/2024.</p>
+                <a href="https://www.acn.gov.it/" target="_blank" class="btn btn-small btn--muted" style="text-decoration: none;">
+                  Vai a acn.gov.it
+                </a>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div><!-- /tab-info -->
+
+    </section>
+  </main>
+
+  <!-- MODALE IMPOSTAZIONI AI -->
+  <div id="settingsModal" class="modal-overlay" style="display:none;">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2>Impostazioni IA (Bring Your Own Key)</h2>
+        <button class="btn-close" id="closeSettings">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p class="panel-hint">Configura le credenziali API per utilizzare le funzioni di Vector Building e Riassunto
+          Narrativo. I dati vengono salvati localmente nel browser.</p>
+        <div style="background: rgba(220, 38, 38, 0.1); border-left: 4px solid var(--danger); padding: 0.8rem; margin-bottom: 1rem; border-radius: var(--radius-sm); font-size: 0.85rem;">
+          <strong style="color: var(--danger);">⚠️ Attenzione alla privacy e sicurezza:</strong> Le tue chiavi API vengono salvate in chiaro su questo browser. Se stai utilizzando un computer condiviso o pubblico, assicurati di <strong>rimuovere le chiavi</strong> azzerando i campi prima di chiudere la pagina per evitare che altri le possano utilizzare.
+        </div>
+
+        <div class="config-form">
+          <label>
+            <span>Provider AI:</span>
+            <select id="aiProvider">
+              <option value="openai">OpenAI / Compatible</option>
+              <option value="google">Google Gemini (AI Studio)</option>
+              <option value="claude">Anthropic Claude</option>
+            </select>
+          </label>
+          <label>
+            <span>Chiave API:</span>
+            <input type="password" id="apiKey" placeholder="es. sk-... o AIza...">
+          </label>
+          <label>
+            <span>Base URL API:</span>
+            <input type="text" id="apiUrl" placeholder="es. https://api.openai.com/v1">
+          </label>
+          <label>
+            <span>Modello AI:</span>
+            <div style="display: flex; gap: 0.5rem; align-items: center;">
+              <select id="aiModel" style="flex:1;">
+                <option value="">seleziona..</option>
+                <option value="gpt-3.5-turbo">GPT-3.5 Turbo</option>
+              </select>
+              <button class="btn btn-small btn--muted" id="getModelsBtn" type="button" title="Recupera Modelli">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="23 4 23 10 17 10"></polyline>
+                  <polyline points="1 20 1 14 7 14"></polyline>
+                  <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                </svg>
+              </button>
+            </div>
+          </label>
+        </div>
+        <p id="aiError" style="display:none;color:var(--danger);margin-top:0.8rem;font-size:0.85rem;"></p>
+      </div>
+      <div class="modal-footer">
+        <button id="saveAIConfig" class="btn btn-primary">Salva ed Applica</button>
+      </div>
+    </div>
+  </div>
+
+
+
+  <script>
+    // -- Global Navigation Logic
+    function showTab(id) {
+      const tabs = document.querySelectorAll('.nav-tab');
+      const contents = document.querySelectorAll('.main-tab-content');
+
+      tabs.forEach(t => t.classList.remove('active'));
+      contents.forEach(c => c.style.display = 'none');
+
+      const targetTab = document.querySelector(`.nav-tab[data-target="${id}"]`);
+      const targetContent = document.getElementById(id);
+
+      if (targetTab) targetTab.classList.add('active');
+      if (targetContent) {
+        targetContent.style.display = 'block';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+
+    // Global descriptions object - will be loaded from taxonomy.json
+    let descriptions = { categories: {}, options: {} };
+    const taxonomyBackup = {
+      "categories": {
+        "impact": "Il predicato Impact si riferisce alla perturbazione causata da un evento cyber. I valori associati a Impact identificati dall\u2019Agenzia per la tassonomia degli eventi cyber sono elencati di seguito.",
+        "rootCause": "Il predicato Root Cause categorizza le cause che hanno determinato uno specifico evento, sia di natura accidentale, sia deliberata. I valori associati a Root Cause identificati dall\u2019Agenzia per la tassonomia degli eventi cyber sono elencati di seguito.",
+        "severity": "Il predicato Severity ha lo scopo di indicare la gravit\u00e0 dell\u2019impatto di un evento cyber. Questo predicato \u00e8 associabile a quattro livelli, riferiti alla criticit\u00e0 dell\u2019impatto subito. I valori associati a Severity identificati dall\u2019Agenzia per la tassonomia degli eventi cyber sono elencati di seguito.",
+        "victimGeography": "Il predicato Victim Geography identifica l\u2019area geografica in cui si trovano i beni informatici interessati dall\u2019evento cyber. I valori associati a Victim Geography identificati dall\u2019Agenzia per la tassonomia degli eventi cyber sono elencati di seguito.",
+        "activeScanning": "Il predicato Active Scanning identifica tecniche utilizzate da attori malevoli che prevedono la scansione della rete attraverso un contatto diretto con il sistema o con la rete target. Gli attori malevoli effettuano scansioni attive per diverse finalit\u00e0, come per esempio l\u2019analisi e la rilevazione di vulnerabilit\u00e0 e falle di sicurezza o per l\u2019enumerazione delle risorse disponibili all\u2019interno di un sistema o di una rete. I valori associati ad Active Scanning identificati dall\u2019Agenzia per la tassonomia degli eventi cyber sono elencati di seguito.",
+        "availability": "In ambito informatico, per Availability (Disponibilit\u00e0) si intende la capacit\u00e0 di un sistema informativo di garantire agli utenti autorizzati un accesso e un uso tempestivo e sempre fruibile delle informazioni. Tale predicato \u00e8 in uso per specificare la causa dell\u2019impatto sulla disponibilit\u00e0. I valori associati a Availability identificati dall\u2019Agenzia per la tassonomia degli eventi cyber sono elencati di seguito.",
+        "brandAbuse": "Un\u2019azione o una serie di azioni intenzionali che sfruttano il valore o la reputazione di un marchio per scopi malevoli, phishing, cybersquatting, typosquatting. Il Brand Abuse pu\u00f2 includere l\u2019imitazione di siti web, l\u2019uso non autorizzato di loghi o di marchi e la creazione di contenuti apparentamenti legittimi destinati a trarre in inganno gli utenti. I valori associati per Brand Abuse identificati dall\u2019Agenzia per la tassonomia degli eventi cyber sono elencati di seguito.",
+        "fraud": "Il predicato Fraud identifica un\u2019azione o una serie di azioni deliberatamente compiute con l\u2019intento di ottenere un vantaggio economico o di altro tipo, attraverso l\u2019inganno o la manipolazione. I valori associati a Fraud identificati dall\u2019Agenzia per la tassonomia degli eventi cyber sono elencati di seguito.",
+        "dataExposure": "Il predicato Data Exposure identifica gli eventi cyber in cui \u00e8 occorsa una violazione di sicurezza dei dati/informazioni personali o proprietarie. L\u2019evento si riferisce alla divulgazione involontaria o non autorizzata di dati sensibili, compromettendo la riservatezza e la sicurezza delle informazioni. I valori associati a Data Exposure identificati dall\u2019Agenzia per la tassonomia degli eventi cyber sono elencati di seguito.",
+        "informationGathering": "Per Information Gathering si intendono le tecniche, tattiche o procedure che possono essere utilizzate da criminali informatici al fine di raccogliere quante pi\u00f9 informazioni possibili su un determinato obiettivo, sia esso un utente, un\u2019applicazione, un sistema o una rete. I valori associati a Information Gathering identificati dall\u2019Agenzia per la tassonomia degli eventi cyber sono elencati di seguito.",
+        "maliciousCode": "Per Malicious Code si intende un software o una porzione di codice potenzialmente dannosa, spesso inquadrabile come malware, che, una volta eseguito su un sistema, ha l\u2019obiettivo di prenderne il controllo e/o comprometterne potenzialmente la riservatezza, l\u2019integrit\u00e0 e la disponibilit\u00e0. I valori associati a Malicious Code identificati dall\u2019Agenzia per la tassonomia degli eventi cyber sono elencati di seguito.",
+        "socialEngineering": "Il predicato Social Engineering identifica un evento di sicurezza informatica in cui un attore malevolo sfrutta un insieme di tecniche e tattiche per persuadere un individuo a compiere azioni che hanno conseguenze sul dominio cyber quali, ad esempio, il download di malware e la condivisione di informazioni personali o sensibili. Attivit\u00e0 di Social Engineering fanno leva sulla componente psicologica ed emotiva della vittima per ottenere gli obiettivi prefissati. I valori associati a Social Engineering identificati dall\u2019Agenzia per la tassonomia degli eventi cyber sono elencati di seguito.",
+        "vulnerability": "Il predicato Vulnerability identifica quale tipologia di vulnerabilit\u00e0 interessa un determinato prodotto o servizio o \u00e8 connessa ad uno specifico evento cyber. I valori associati a Vulnerability identificati dall\u2019Agenzia per la tassonomia degli eventi cyber sono elencati di seguito.",
+        "adversaryMotivation": "Adversary Motivation identifica, se note al momento della condivisione, le motivazioni che hanno mosso l\u2019attore malevolo nel compiere l\u2019attivit\u00e0 illecita o malevola. I valori associati ad Adversary Motivation identificati dall\u2019Agenzia per la tassonomia degli eventi sono elencati di seguito.",
+        "adversaryType": "Il predicato Adversary Type identifica, se nota al momento della condivisione, la tipologia di attaccante o gruppo che ha perpetrato le azioni malevole o illecite. Questo predicato non indica le motivazioni che hanno mosso l\u2019avversario, per le quali \u00e8 invece prevista la categoria Adversary Motivation (\u00a7 3.3.1). I valori associati ad Adversary Type identificati dall\u2019Agenzia per la tassonomia degli eventi cyber sono elencati di seguito.",
+        "abusiveContent": "Nell\u2019ambito di un evento di sicurezza informatica, il predicato Abusive Content identifica la presenza di materiale offensivo, illegale o non voluto inviato ad un utente con finalit\u00e0 di ferirne la sensibilit\u00e0 o la dignit\u00e0. La diffusione di tale materiale pu\u00f2 avvenire in maniera diretta, ad esempio tramite e-mail o sms, o in maniera indiretta, ad esempio tramite popup o pubblicit\u00e0 su Internet. I valori associati a Abusive Content identificati dall\u2019Agenzia per la tassonomia degli eventi cyber sono elencati di seguito.",
+        "assetSourceGeography": "Il predicato Asset Source Geography identifica la localizzazione geografica di beni informatici coinvolti in eventi cyber che sono stati identificati come \u201csorgenti\u201d di attivit\u00e0 malevole o illecite. I valori associati ad Asset Source Geography identificati dall\u2019Agenzia per la tassonomia degli eventi cyber sono elencati di seguito.",
+        "involvedAsset": "Il predicato Involved Asset identifica le risorse coinvolte nell\u2019evento cyber. I valori relativi a questo predicato possono indicare una o pi\u00f9 risorse interessate dall\u2019evento, anche in assenza di impatto. Vista la numerosit\u00e0 dei valori associati al predicato Involved Asset, essi sono stati suddivisi in 19 sotto-predicati, ai fini di facilitare la rapida individuazione dei valori richiesti. I sotto-predicati associati a Involved Asset, e i relativi valori, identificati dall\u2019Agenzia per la tassonomia degli eventi cyber sono elencati di seguito. Il sotto-predicato Hardware \u2013 Network Device identifica le componenti hardware che costituiscono l\u2019infrastruttura di rete. Tali componenti, collegati da appositi canali di comunicazione (link), forniscono un servizio di comunicazione che permette lo scambio e la condivisione di dati tra pi\u00f9 utenti, dispositivi distribuiti o terminali (host).",
+        "outlook": "Il predicato Outlook ha l\u2019obiettivo di fornire una prospettiva sull\u2019impatto generato da un evento cyber al momento del rilevamento. I valori associati a Outlook identificati dall\u2019Agenzia per la tassonomia degli eventi cyber sono elencati di seguito.",
+        "physicalSecurity": "Il predicato Physical Security identifica gli eventi intenzionali, di natura fisica, con impatto su risorse e servizi informatici. Alcuni esempi possono essere l\u2019accesso fisico non autorizzato a zone riservate da parte di estranei finalizzato al sabotaggio deliberato di una piattaforma operativa o furto di componenti hardware. I valori associati a Physical Security identificati dall\u2019Agenzia per la tassonomia degli eventi cyber sono elencati di seguito.",
+        "vector": "Il predicato Vector indica il vettore di attacco utilizzato in un evento cyber. In sicurezza informatica, si definisce vettore d’attacco la modalità con la quale un attore ostile tenta di ottenere l’accesso ad un bene informatico per effettuare attività malevole.",
+        "operatingSystem": "Il predicato Operating System identifica il sistema operativo installato sul bene informatico coinvolto nell'evento cyber."
+      },
+      "options": {
+        "impact": {
+          "AC": "Account Compromise - Account Compromise identifica gli eventi cyber che hanno avuto come effetto la compromissione di un account utente o di servizio. \u00c8 possibile specificare il tipo di account compromesso utilizzando il predicato Involved asset (\u00a7 3.4.3).",
+          "AP": "Application Compromise - Application Compromise identifica gli eventi cyber che hanno avuto come effetto la compromissione di un\u2019applicazione o di un servizio, incluse applicazioni Web, Mobile, Database, ecc. \u00c8 possibile specificare il tipo di application compromise utilizzando il predicato Involved asset (\u00a7 3.4.3).",
+          "AV": "Availability - Availability identifica gli eventi nei quali le attivit\u00e0 malevole condotte da un attaccante hanno causato effetti sulla disponibilit\u00e0 del sistema o servizio erogato. Nel caso in cui un evento cyber venga classificato utilizzando tale valore, dovr\u00e0 essere esplicitato anche il predicato Availability (\u00a7 3.2.2).",
+          "DX": "Data Exfiltration - Data Exfiltration identifica gli eventi cyber in cui \u00e8 stata riscontrata la compromissione della riservatezza delle informazioni presenti su un bene informatico. Tale perdita o fuga dei dati pu\u00f2 avvenire a causa di attivit\u00e0 malevole, ad esempio a seguito di una compromissione di un file server, oppure accidentalmente, nel caso di un database esposto su Internet senza un accurato processo di autenticazione.",
+          "DE": "Data Exposure - Data Exposure si riferisce alla divulgazione non autorizzata di dati sensibili o riservati, causata da vulnerabilit\u00e0 di sicurezza, errori di configurazione o pratiche inadeguate di gestione delle informazioni. Questo fenomeno pu\u00f2 portare alla diffusione di informazioni personali, finanziarie o aziendali aumentando il rischio di furti di identit\u00e0, frodi o danni reputazionali per individui e organizzazioni.",
+          "DM": "Data Manipulation - Data Manipulation identifica gli eventi cyber in cui \u00e8 stata riscontrata la compromissione dell\u2019integrit\u00e0 delle informazioni presenti su un bene informatico. Tale valore include la modifica o la distruzione dei dati da parte di un attore malevolo.",
+          "NO": "No Impact - No Impact identifica un evento cyber che avrebbe potuto compromettere la disponibilit\u00e0, l\u2019autenticit\u00e0, l\u2019integrit\u00e0 o la riservatezza di dati conservati, trasmessi o elaborati o dei servizi offerti dai sistemi informatici e di rete o accessibili attraverso di essi, ma che \u00e8 stato efficacemente evitato o non si \u00e8 verificato. Un esempio \u00e8 la ricezione di una e-mail di phishing riconosciuta come tale dall\u2019utente e pertanto sostanzialmente priva di effetti.",
+          "SY": "System Compromise - System Compromise identifica gli eventi cyber che hanno avuto come effetto la compromissione di un bene informatico, ad esempio alterandone l\u2019integrit\u00e0.",
+          "OT": "Other - Other identifica gli eventi cyber relativi a Impact non identificabili con gli altri valori definiti nel sottoinsieme."
+        },
+        "rootCause": {
+          "HU": "Human errors - Human Errors identifica gli eventi provocati da un errore umano non intenzionale. Un esempio \u00e8 un\u2019errata operazione che influisce sulla prevista funzionalit\u00e0 di un bene informatico.",
+          "MA": "Malicious Actions - Malicious Actions identifica qualsiasi tentativo di compromettere l\u2019integrit\u00e0, la confidenzialit\u00e0 o la disponibilit\u00e0 di un bene informatico.",
+          "NA": "Natural Phenomena - Natural Phenomena identifica gli eventi causati da un fenomeno naturale, come ad esempio, terremoti, valanghe ed esondazioni.",
+          "SY": "System Failure - System Failure identifica un evento non previsto, in cui un sistema cessa di funzionare secondo le specifiche progettuali previste, comportando una perdita di servizio o una riduzione significativa della qualit\u00e0 del servizio fornito.",
+          "TH": "Third Party Failure - Third Party Failure identifica l\u2019interruzione o degradazione delle prestazioni di un sistema principale attribuibile a disfunzioni o guasti di servizi forniti da terze parti."
+        },
+        "severity": {
+          "HI": "High - High identifica un evento cyber riferito ad una delle seguenti condizioni: \u2022 l\u2019organizzazione non \u00e8 pi\u00f9 in grado di fornire uno o pi\u00f9 servizi essenziali agli utenti; \u2022 dati/informazioni personali o proprietarie sono stati modificati, cancellati o esfiltrati; \u2022 il ripristino dall\u2019incidente non \u00e8 possibile (ad esempio, dati sensibili esfiltrati e diffusi, non recuperabili a seguito di un evento ransomware).",
+          "ME": "Medium - Medium identifica un evento cyber riferito ad una delle seguenti condizioni: \u2022 l\u2019organizzazione \u00e8 in grado di erogare un servizio essenziale solo ad una parte dell\u2019utenza; \u2022 \u00e8 stato rilevato l\u2019accesso e l\u2019esfiltrazione a dati/informazioni personali o proprietarie; \u2022 il ripristino \u00e8 possibile con tempistiche non note in quanto, ad esempio, sono necessarie risorse aggiuntive o supporto esterno.",
+          "LO": "Low - Low identifica un evento cyber riferito ad una delle seguenti condizioni: \u2022 l\u2019organizzazione pu\u00f2 ancora fornire tutti i servizi essenziali a tutti gli utenti, ma risultano non ottimali in termini di efficienza; \u2022 \u00e8 stato rilevato l\u2019accesso a dati/informazioni sensibili o proprietarie; \u2022 il ripristino \u00e8 possibile con tempistiche note, anche tramite risorse aggiuntive.",
+          "NO": "None - None identifica un evento cyber riferito ad una delle seguenti condizioni: \u2022 nessun effetto sulla capacit\u00e0 dell\u2019organizzazione di erogare i servizi agli utenti; \u2022 nessuna informazione \u00e8 stata oggetto di accesso non autorizzato, esfiltrazione, modifica o cancellazione; \u2022 il tempo necessario per il ripristino \u00e8 prevedibile con le risorse esistenti."
+        },
+        "victimGeography": {
+          "IT": "Italy - Italy indica che l\u2019evento cyber ha avuto un impatto su beni informatici localizzati in Italia.",
+          "AF": "Africa - Africa indica che l\u2019evento cyber ha avuto un impatto su beni informatici localizzati geograficamente sul continente africano.",
+          "AM": "America - America indica che l\u2019evento cyber ha avuto un impatto su beni informatici localizzati geograficamente sul continente americano.",
+          "AN": "Antarctica - Antarctica indica che l\u2019evento cyber ha avuto un impatto su beni informatici localizzati geograficamente sul continente antartico.",
+          "AS": "Asia - Asia indica che l\u2019evento cyber ha avuto un impatto su beni informatici localizzati geograficamente sul continente asiatico.",
+          "EU": "Europe - Europe indica che l\u2019evento cyber ha avuto un impatto su beni informatici localizzati geograficamente sul continente europeo.",
+          "OC": "Oceania - Oceania indica che l\u2019evento cyber ha avuto un impatto su beni informatici localizzati nella zona continentale Oceania.",
+          "GL": "Global - Global indica che l\u2019evento cyber ha avuto un impatto su beni informatici distribuiti in pi\u00f9 paesi o ha un potenziale impatto globale. 3.2 THREAT TYPE (TT)"
+        },
+        "activeScanning": {
+          "CR": "Credential Scanning - Credential Scanning identifica gli eventi cyber in cui un attore malevolo effettua una scansione attiva per rilevare credenziali di autenticazione deboli, impropriamente configurate oppure esposte su un bene informatico. Questo tipo di attivit\u00e0 include diverse tipologie di eventi, quali gli attacchi a forza bruta, volti a individuare la password di uno o pi\u00f9 account specifici, oppure attacchi di account discovery, mirati alla scoperta di account validi o realmente esistenti sul sistema target.",
+          "NE": "Network Scanning - Network Scanning identifica gli eventi cyber in cui un attore malevolo utilizza tecniche e procedure mirate a identificare la presenza di servizi in esecuzione su beni informatici remoti o connessi all\u2019infrastruttura target. Questa categoria di evento comprende la scansione delle porte (port scan), la mappatura della rete (network mapping) e la rilevazione del sistema operativo (OS fingerprinting).",
+          "VU": "Vulnerability Scanning - Vulnerability Scanning identifica gli eventi cyber in cui un attore malevolo utilizza tecniche e procedure mirate in modo specifico all\u2019individuazione di vulnerabilit\u00e0 presenti in un bene informatico al fine di mappare la superficie d\u2019attacco.",
+          "OT": "Other - Other identifica gli eventi cyber relativi ad Active Scanning non identificabili con gli altri valori definiti nel sottoinsieme."
+        },
+        "availability": {
+          "DA": "Data Encryption - Data Encryption identifica gli eventi cyber in cui un attore malevolo applica algoritmi di cifratura ai dati custoditi in un sistema informatico compromesso, senza il consenso del proprietario, al fine di renderli inaccessibili. Tale attivit\u00e0 comporta principalmente un impatto sulla disponibilit\u00e0 dei dati presenti sul bene informatico e sull\u2019erogazione dei servizi. Un esempio di tale evento \u00e8 la cifratura dei dati di un sistema informatico a seguito dell\u2019esecuzione di un ransomware.",
+          "DD": "DDoS - Distributed Denial of Service (DDoS) identifica gli eventi cyber in cui un attore malevolo effettua un attacco, da sorgenti multiple e distribuite, che mira a compromettere la disponibilit\u00e0 di un bene informatico o un di servizio mediante esaurimento delle sue risorse di rete, di elaborazione o di memoria.",
+          "DO": "DoS - Denial of Service (DoS) identifica gli eventi cyber in cui un attore malevolo effettua un attacco che mira a compromettere la disponibilit\u00e0 di un bene informatico o di un servizio mediante esaurimento delle sue risorse di rete, di elaborazione o di memoria.",
+          "MI": "Misconfiguration - Misconfiguration identifica gli eventi cyber non malevoli in cui una configurazione errata o non ottimale di un bene informatico o di una sua componente ha compromesso la disponibilit\u00e0 di un servizio. Un caso d\u2019esempio \u00e8 un\u2019errata configurazione di un componente di rete che potrebbe causare la perdita totale o parziale di erogazione di un servizio. \u00c8 importante evidenziare che la disponibilit\u00e0 \u00e8 stata compromessa a causa di un\u2019azione non intenzionale e quindi non malevola, pertanto, tale predicato \u00e8 comunemente associato al valore Human errors (\u00a7 3.1.2.1) del predicato Root cause (\u00a7 3.1.2).",
+          "OU": "Outage - Outage identifica gli eventi cyber non malevoli in cui si \u00e8 riscontrata la perdita totale o parziale della disponibilit\u00e0 di un bene informatico a causa di eventi naturali o causati dall\u2019uomo. Possibili cause di un evento di indisponibilit\u00e0 possono essere l\u2019avvenimento di un disastro naturale, il mancato funzionamento dei sistemi di refrigerazione di un datacenter oppure un guasto elettrico. \u00c8 importante evidenziare che la disponibilit\u00e0 \u00e8 stata compromessa a causa di un\u2019azione non intenzionale e quindi non malevola.",
+          "OT": "Other - Other identifica gli eventi cyber nei quali si riscontra una perdita di disponibilit\u00e0 di un bene informatico o di un applicativo per una causa che non rientra in quelle indicate negli altri valori associabili al predicato Availability (\u00a7 3.2.2)."
+        },
+        "brandAbuse": {
+          "AI": "Account Impersonation - Account Impersonation si riferisce all\u2019attivit\u00e0 in cui un attore malevolo si finge un\u2019altra persona, sistema o organizzazione per ingannare la vittima e ottenere l\u2019accesso non autorizzato a informazioni sensibili. Questa attivit\u00e0 pu\u00f2 includere sia la compromissione di un account esistente, sia la creazione di un nuovo profilo affine.",
+          "CS": "Cybersquatting - Cybersquatting si riferisce alla pratica di registrare e utilizzare abusivamente un nome di dominio Internet identico o simile a marchi registrati, nomi di servizi, nomi personali o aziendali, con l\u2019intento malevolo di deviare il traffico verso altri siti per ricavarne un profitto economico, diffondere malware o rubare propriet\u00e0 intellettuale.",
+          "NI": "Name Logo Impersonation - Name Logo Impersonation si riferisce all\u2019atto deliberato di replicare o imitare in modo fraudolento il nome e il logo di un\u2019entit\u00e0 riconosciuta, come un\u2019organizzazione rinomata o un servizio noto, nell\u2019intento di trarre in inganno la vittima. Questa tecnica \u00e8 impiegata prevalentemente nelle strategie di phishing o in altri schemi di ingegneria sociale.",
+          "TS": "Typosquatting - Typosquatting, conosciuto anche come \u201cURL hijacking\u201d, \u00e8 una pratica fraudolenta nell\u2019ambito della sicurezza informatica che si verifica quando un attore malevolo registra deliberatamente nomi di dominio che imitano siti web esistenti con lievi variazioni ortografiche. Questo fenomeno sfrutta gli errori di digitazione che gli utenti commettono durante la battitura degli indirizzi web nel browser. Questa pratica pu\u00f2 essere utilizzata per una serie di attivit\u00e0 fraudolente, tra cui deviare il traffico verso altri siti, phishing o la diffusione di malware.",
+          "OT": "Other - Other identifica gli eventi cyber relativi a Brand Abuse non identificabili con gli altri valori definiti nel sottoinsieme."
+        },
+        "fraud": {
+          "BR": "Brand Abuse - Brand Abuse identifica un\u2019attivit\u00e0 fraudolenta in cui un attore malevolo sfrutta la notoriet\u00e0 di un\u2019organizzazione per creare falsi siti web, false campagne pubblicitarie o false partnership con il proposito di danneggiarne la reputazione o di condurre attivit\u00e0 di criminalit\u00e0 informatica. Tra gli esempi rientrano: la creazione di profili o gruppi falsi sui social media che sfruttano illecitamente il brand o il logo di un\u2019azienda, la creazione di applicazioni mobili ingannevoli o la distribuzione di pubblicit\u00e0 non autorizzate.",
+          "EX": "Extortion - Extortion identifica, nel contesto della sicurezza informatica, l\u2019attivit\u00e0 criminale in cui un aggressore esercita coercizione su un individuo o un\u2019organizzazione per ottenere benefici finanziari o altre forme di compensazione. La condotta viene attuata tramite l\u2019esercizio della minaccia di causare danni o di divulgare informazioni sensibili. Un esempio di questa pratica \u00e8 il ransomware, un tipo di malware che cifra i dati della vittima rendendoli inaccessibili, utilizzato per costringere la vittima a pagare un riscatto, di solito in criptovalute, in cambio della chiave di decifratura. Altre forme di estorsione possono includere la minaccia di diffusione di dati personali o aziendali, qualora non vengano soddisfatte le richieste dell\u2019aggressore.",
+          "MA": "Masquerade - Masquerade indica un\u2019attivit\u00e0 fraudolenta in cui un attore malevolo assume l\u2019identit\u00e0 di un altro utente, dispositivo o entit\u00e0 all\u2019interno di una rete o sistema informatico, al fine di eludere i meccanismi di sicurezza e acquisire accessi non autorizzati a risorse o beni informatici. Tale attacco implica l\u2019utilizzo fraudolento di credenziali, indirizzi di rete, token di autenticazione o altri dati identificativi utili per impersonare una fonte autorizzativa fidata. Un tipico caso \u00e8 rappresentato da un attaccante che invia un\u2019e-mail a un dipendente aziendale fingendo di essere il CEO dell\u2019azienda e richiede con urgenza un trasferimento di fondi per una transazione aziendale critica o la divulgazione di informazioni riservate, come dati finanziari o dati dei clienti.",
+          "RE": "Resource misuse - Resource Misuse identifica gli eventi cyber in cui un attore malevolo ha sfruttato in maniera non autorizzata le risorse di un computer o di una rete per scopi illeciti. Un tipico esempio \u00e8 rappresentato da un dipendente che sfrutta il suo accesso ai sistemi aziendali per eseguire programmi che estraggono criptovalute (mining) oppure per effettuare attacchi informatici ai danni di soggetti terzi.",
+          "SP": "Spam - Spam identifica gli eventi cyber in cui un attore malevolo invia messaggi pubblicitari indesiderati o non richiesti, generalmente di carattere commerciale. I messaggi di spam possono essere inviati attraverso qualunque sistema di comunicazione, tra cui messaggi di posta elettronica, SMS, chat, forum e social media.",
+          "OT": "Other - Other identifica gli eventi cyber relativi al predicato Fraud non identificabili con gli altri valori definiti nel sottoinsieme."
+        },
+        "dataExposure": {
+          "AU": "Authentication Data - Authentication Data identifica gli eventi cyber nei quali \u00e8 stata identificata una violazione di sicurezza dei dati relativi all\u2019autenticazione degli utenti del bene informatico impattato, come username e password.",
+          "BU": "Business Data - Business Data identifica gli eventi cyber nei quali \u00e8 stata identificata una violazione di sicurezza dei dati relativi all\u2019azienda, quali dati sulle sue attivit\u00e0, sui suoi contratti, sulla propriet\u00e0 intellettuale, ecc.",
+          "FI": "Financial Data - Financial Data identifica gli eventi cyber nei quali \u00e8 stata identificata una violazione di sicurezza dei dati relativi alla sfera finanziaria dell\u2019azienda, come entrate, uscite, dati di transazioni finanziarie, dati relativi a carte di credito, ecc.",
+          "PD": "Personal Data - Personal Data identifica gli eventi cyber nei quali si \u00e8 verificata una violazione di sicurezza dei personali, ovvero delle informazioni che identificano o rendono identificabile, direttamente o indirettamente, una persona fisica e che possono fornire informazioni sulle sue caratteristiche, le sue abitudini, il suo stile di vita, le sue relazioni personali, il suo stato di salute, la sua situazione economica, ecc.",
+          "OT": "Other - Other identifica gli eventi cyber relativi a Data Exposure non identificabili con gli altri valori definiti nel sottoinsieme."
+        },
+        "informationGathering": {
+          "AC": "Active Scanning - Active Scanning identifica gli eventi cyber in cui un attore malevolo cerca di raccogliere informazioni mediante una scansione attiva, ossia attraverso contatti diretti con il bene informatico target. Per specificare i dettagli sulla tipologia di scansione attiva si utilizza il predicato Active Scanning (\u00a7 3.2.1).",
+          "SN": "Sniffing - Sniffing identifica gli eventi cyber in cui un attore non autorizzato utilizza tecniche o strumenti atti ad acquisire pacchetti di rete con il fine di rubare dati, monitorare attivit\u00e0 di rete e raccogliere informazioni. Un esempio di eventi identificabili con tale valore \u00e8 l\u2019osservazione non autorizzata di informazioni d\u2019interesse come ad esempio, header, credenziali o token di accesso non cifrati inviati in rete.",
+          "SO": "Social Engineering - Social engineering identifica gli eventi cyber in cui un attore malevolo utilizza un insieme di tecniche e tattiche per persuadere un individuo a compiere determinate azioni per diverse finalit\u00e0, tra le quali si evidenziano le seguenti: \u2022 ottenere informazioni personali; \u2022 ottenere credenziali di accesso; \u2022 indurre l\u2019utente a compiere azioni come, ad esempio, installare malware. Attivit\u00e0 di social engineering fanno leva sulla componente psicologica ed emotiva della vittima per ottenere gli obiettivi prefissati.",
+          "OT": "Other - Other identifica gli eventi cyber relativi a Information Gathering non identificabili con gli altri valori definiti nel sottoinsieme."
+        },
+        "maliciousCode": {
+          "BA": "Backdoor - Una Backdoor \u00e8 una tipologia di malware che garantisce un accesso secondario a un bene informatico compromesso, consentendo all\u2019attaccante di accedervi da remoto ed eseguire azioni arbitrarie, come il trasferimento di file o l\u2019esecuzione di comandi.",
+          "BK": "Banker - Un Banker, anche noto come banking trojan, \u00e8 una tipologia di malware che tenta di sottrarre illecitamente le credenziali dei clienti di istituti bancari o di ottenere l\u2019accesso alle loro informazioni finanziarie, tipicamente intercettando le comunicazioni del browser.",
+          "BO": "Bot - Un Bot \u00e8 un programma informatico progettato per adempiere ad un preciso scopo, sia esso lecito o dannoso. In questo secondo caso, si parla di bot malware, ovvero strumenti utilizzati da criminali informatici per creare una rete di computer zombie, nota come botnet, ed effettuare un insieme di attivit\u00e0 malevole di diversa natura. Spesso i bot vengono installati sulle macchine target a insaputa dell\u2019utente.",
+          "CO": "Coin Miner - Un Coin Miner \u00e8 una tipologia di malware che sfrutta la potenza di calcolo del bene informatico target per estrarre criptovalute a insaputa dell\u2019utente.",
+          "EX": "Exploit Kit - Un Exploit Kit \u00e8 un insieme di strumenti software progettati per sfruttare le vulnerabilit\u00e0 presenti in una rete, in un sistema o in un\u2019applicazione. In sicurezza informatica, questi strumenti sono utilizzati dagli attaccanti per eseguire e automatizzare numerose tecniche e procedure di attacco al fine di accedere, infettare e danneggiare i beni informatici.",
+          "HA": "Hacking Tool - Un Hacking Tool \u00e8 un programma progettato per violare le misure di sicurezza di un bene informatico. \u00c8 utilizzato sia per attivit\u00e0 di natura legittima (ad esempio per valutare la sicurezza di un bene informatico in un\u2019attivit\u00e0 di tipo red team) sia in contesti non autorizzati o per scopi illeciti. Alcuni esempi sono PsExec, Mimikatz, Cobalt Strike e LOIC.",
+          "IN": "Information Stealer - Un Information Stealer, o pi\u00f9 brevemente infostealer, \u00e8 una tipologia di malware che ha lo scopo di raccogliere informazioni su un bene informatico in maniera illegittima. Queste informazioni possono includere credenziali di accesso, dati personali e informazioni finanziarie. I malware noti come keylogger o spyware rientrano in questa classificazione.",
+          "LO": "Loader - Un Loader \u00e8 una tipologia di malware che permette di scaricare ed eseguire malware aggiuntivi sul bene informatico compromesso. I malware noti come dropper e downloader rientrano in questa classificazione.",
+          "PO": "Potentially Unwanted Program - Un Potentially Unwanted Program, noto anche come PUP o PUA (Potentially Unwanted Application), pu\u00f2 essere considerato come un software indesiderato secondo le preferenze dell\u2019utente. Sebbene questa classificazione non indichi la presenza di un malware, i PUP possono rappresentare una minaccia per la privacy e la sicurezza del sistema e dell\u2019utente.",
+          "RA": "Ransomware - Il Ransomware \u00e8 una tipologia di minaccia che ha lo scopo di cifrare i dati del bene informatico target in modo da comprometterne la disponibilit\u00e0 e l\u2019integrit\u00e0. Inoltre, in questa tipologia di minaccia spesso l\u2019attaccante crea dei file, detti ransom notes, tramite i quali viene richiesto alla vittima un riscatto in cambio dell\u2019accesso ai propri dati. In alcuni casi i dati, prima di essere cifrati, vengono esfiltrati in modo da offrire all\u2019attaccante uno strumento in pi\u00f9 di ricatto nei confronti della vittima.",
+          "RE": "Remote Access Tool - Un RAT, acronimo di Remote Access Tool, \u00e8 una tipologia di malware che consente all\u2019attaccante di controllare un bene informatico target da remoto. Questa tipologia di codice malevolo permette di eseguire varie azioni non autorizzate, come l\u2019acquisizione di dati, il trasferimento di file e l\u2019esecuzione di comandi arbitrari.",
+          "RO": "Rootkit - Un Rootkit \u00e8 una tipologia di malware tipicamente sofisticato progettato per infiltrarsi all\u2019interno di un sistema operativo o di un\u2019applicazione, mascherando la sua presenza e ottenendo privilegi di accesso elevati. Un rootkit ha la caratteristica di infettare e modificare le funzioni del sistema operativo e le sue strutture dati. In sicurezza informatica, le caratteristiche del rootkit permettono di evadere i controlli dell\u2019antivirus e di garantire persistenza a lungo termine sui sistema target.",
+          "TR": "Trojan - Un Trojan \u00e8 una tipologia di software che si presenta all\u2019utente sotto forma di programma legittimo o comunque non dannoso, ma che una volta eseguito ha lo scopo di scaricare e avviare sul bene informatico target un ulteriore software malevolo. I trojan sono progettati per ingannare gli utenti e possono svolgere una vasta gamma di funzioni malevole, come il furto di informazioni, il controllo remoto del sistema, l\u2019installazione di altri malware o la creazione di backdoor per consentire l\u2019accesso non autorizzato.",
+          "VI": "Virus - Un Virus \u00e8 un software potenzialmente dannoso che, quando eseguito su un bene informatico, ha l\u2019obiettivo di autoreplicarsi modificando (infettando) i programmi in esecuzione e alterandone (injection) il funzionamento. Utilizzando un virus, un attaccante potrebbe eliminare i dati e/o i programmi presenti su un bene informatico, bloccarne l\u2019accesso o attuare tecniche di compromissione avanzate per garantirsi persistenza sul sistema e permetterne la raggiungibilit\u00e0 da remoto (i.e. installando una backdoor).",
+          "WE": "Webshell - Una Webshell \u00e8 una tipologia di script o programma che viene installato su un server web compromesso al fine di ottenere un accesso non autorizzato e persistente sul bene informatico.",
+          "WI": "Wiper - Il Wiper \u00e8 una tipologia di malware il cui obiettivo principale \u00e8 quello di eliminare in modo irreversibile dati e file presenti su un bene informatico compromesso. A differenza di altri tipi di malware che cercano di rubare informazioni o estorcere denaro, il wiper ha come obiettivo principale l\u2019eliminazione dei dati, spesso con l\u2019intento di causare danni irreparabili o di sabotare le attivit\u00e0 di un\u2019organizzazione.",
+          "WO": "Worm - Il Worm \u00e8 un software potenzialmente dannoso che l\u2019attaccante pu\u00f2 sfruttare per replicare un malware all\u2019interno di un bene informatico per comprometterne le funzionalit\u00e0. La caratteristica principale del worm \u00e8 la capacit\u00e0 di autoreplicarsi su una rete, senza richiedere l\u2019interazione diretta dell\u2019utente. I worm, a differenza di altri tipi di malware come i virus, possono propagarsi in modo indipendente e autonomo, ad esempio sfruttando le vulnerabilit\u00e0 dei beni informatici o le funzionalit\u00e0 di condivisione di file e risorse di rete.",
+          "UN": "Unknown - Unknown identifica una tipologia di codice malevolo per cui non si hanno informazioni sufficienti a indicarne la natura. Tale valore si utilizza in eventi cyber in cui \u00e8 stata riscontrata la l\u2019esecuzione di codice malevolo o malware ma non \u00e8 ancora in grado di stabilirne la tipologia."
+        },
+        "socialEngineering": {
+          "BA": "Baiting - Baiting identifica attivit\u00e0 fraudolente in cui un attore malevolo attira la vittima mediante un\u2019esca, come la promessa della ricezione di un bene o l\u2019ottenimento di un vantaggio. La superficie di attacco comprende sia il mondo online sia la vita reale. In questi casi, l\u2019attaccante tenta di sfruttare la curiosit\u00e0 umana per convincere la vittima ad effettuare azioni quali, ad esempio, l\u2019inserimento di dati personali su falsi servizi online, il download di malware occultato da applicazioni e contenuti leciti, oppure tramite dispositivi USB utilizzati come esca.",
+          "PH": "Phishing - Phishing identifica gli eventi cyber in cui un utente viene contattato, tramite e-mail o altri strumenti di messaggistica, da un attore malevolo allo scopo di condurre la vittima all\u2019esecuzione di codice malevolo o a visitare risorse artefatte con lo scopo di carpire dati personali, bancari o credenziali di accesso, trasferire somme di denaro. Gli eventi di phishing possono anche essere il preludio o una componente di attacchi informatici pi\u00f9 ampi e complessi.",
+          "SM": "Smishing - Smishing identifica gli eventi cyber in cui un utente viene contattato, tramite l\u2019invio di brevi messaggi di testo (SMS), da un attore malevolo allo scopo di condurre la vittima all\u2019esecuzione di codice malevolo come false applicazioni mobile o a visitare risorse artefatte con lo scopo di carpire dati personali, bancari o credenziali di accesso, trasferire somme di denaro. Gli eventi di smishing possono anche essere il preludio o una componente di attacchi informatici pi\u00f9 ampi e complessi.",
+          "SP": "Spear-Phishing - Spear-Phishing \u00e8 una tipologia di phishing contro target di specifico interesse che prevede l\u2019invio di un messaggio altamente personalizzato da un account di posta elettronica apparentemente noto alla vittima, con l\u2019intento di carpire informazioni sensibili, ovvero indurla ad aprire/scaricare allegati o link malevoli. Allo spear-phishing possono essere associate tecniche di ingegneria sociale, tra cui il monitoraggio delle relazioni e delle abitudini sui social media del soggetto d\u2019interesse.",
+          "VI": "Vishing - Vishing identifica gli eventi cyber in cui un utente viene contattato, tramite sistemi di comunicazione vocale, da un attore criminale allo scopo di condurre la vittima all\u2019esecuzione di codice malevolo o di carpire dati aziendali, personali, bancari o credenziali di accesso, trasferire somme di denaro o anche solo come \u201cponte\u201d per ulteriori attacchi.",
+          "WA": "Watering-Hole - Watering-Hole identifica gli eventi cyber nel quale un attaccante mira a compromettere un gruppo specifico di utenti attraverso l\u2019infezione di siti web che sono noti per essere regolarmente visitati da tale gruppo. L\u2019obiettivo di questa tipologia di attacchi \u00e8 quello di colpire la vittima in modo indiretto tramite la compromissione dell\u2019applicazione Web interessata.",
+          "OT": "Other - Other identifica gli eventi cyber relativi a Social Engineering non identificabili con gli altri valori definiti nel sottoinsieme."
+        },
+        "vulnerability": {
+          "0-": "0-Day Vulnerability - 0-Day Vulnerability identifica che un determinato bene informatico \u00e8 affetto da una vulnerabilit\u00e0 non nota pubblicamente, che quindi potrebbe essere sfruttata da un attaccante per compromettere un sistema informativo e minarne l\u2019integrit\u00e0, la riservatezza e la disponibilit\u00e0.",
+          "N-": "n-Day Vulnerability - n-Day Vulnerability identifica una vulnerabilit\u00e0 0-day che \u00e8 stata resa pubblica da pi\u00f9 di un giorno, indipendentemente dal rilascio del software correttivo. Generalmente, in questi casi, anche successivamente alla pubblicazione della falla di sicurezza un attaccante potrebbe sfruttare la vulnerabilit\u00e0 per compromettere i beni informatici affetti prima che venga attuata la risoluzione tramite il relativo aggiornamento o l\u2019eventuale workaround.",
+          "SE": "Security Misconfiguration - Security Misconfiguration indica che la configurazione errata di un bene informatico pu\u00f2 portare a rischi di sicurezza e provocare falle che possono essere facilmente sfruttate da un criminale informatico per compromettere un sistema. Alcuni esempi di Security Misconfiguration sono il mancato hardening dei sistemi, un\u2019errata gestione dei permessi o l\u2019installazione e abilitazione di funzionalit\u00e0 non adeguatamente protette.",
+          "UN": "Unwanted Exposed Services - Unwanted Exposed Services indica che il bene informatico coinvolto nell\u2019evento di sicurezza espone servizi di rete generalmente non raccomandati in quanto in grado di ampliare la superficie di attacco e, se non adeguatamente protetti, possono inficiare sulla postura di sicurezza. Si tratta di servizi sfruttabili da attori malevoli per penetrare all\u2019interno della rete delle vittime o tali da agevolare, ad esempio, attacchi di tipo DDoS reflection.",
+          "WE": "Weak Cryptography - Weak Cryptography identifica gli eventi cyber relativi all\u2019utilizzo improprio o non corretto dei meccanismi di sicurezza legati alla crittografia. Tecniche di cifratura che impiegano algoritmi di crittografia deboli possono fornire una sicurezza inadeguata contro gli attacchi informatici tali da comportare l\u2019esposizione di dati sensibili, la perdita di chiavi, l\u2019interruzione dell\u2019autenticazione, sessioni non sicure e facilitare attacchi di spoofing.",
+          "PC": "Proof-of-concept - Proof-of-concept identifica, nel contesto della sicurezza informatica, la disponibilit\u00e0 di una dimostrazione tecnica realizzata per validare la presenza di una vulnerabilit\u00e0 teorica, dimostrando come essa possa essere sfruttata in un software o in un sistema informatico.",
+          "OT": "Other - Other identifica gli eventi cyber relativi a Vulnerability non identificabili con gli altri valori definiti nel sottoinsieme. 3.3 THREAT ACTOR (TA)"
+        },
+        "adversaryMotivation": {
+          "DE": "Destruction - Destruction identifica gli eventi cyber nei quali un attaccante ha condotto attivit\u00e0 malevole o illecite volte a danneggiare un bene informatico, al fine di comprometterne il funzionamento, di interrompere l\u2019erogazione totale o parziale dei servizi forniti o di impedirne l\u2019accesso al personale autorizzato. Un esempio di evento cyber dimostrativo per queste caratteristiche \u00e8 rappresentato dagli attacchi che prevedono l\u2019utilizzo di malware di tipo wiper (\u00a7 3.2.7.16). \u00c8 importante evidenziare che gli eventi ransomware non possono essere identificati con questo valore poich\u00e9 in tali casi, solitamente, l\u2019avversario \u00e8 mosso da interessi economici (\u00a7 3.3.1.5) e pertanto non \u00e8 interessato al mero danneggiamento.",
+          "ES": "Espionage - Espionage identifica gli eventi cyber nei quali un attaccante ha condotto un\u2019attivit\u00e0 indebita finalizzata all\u2019acquisizione di dati/informazioni sensibili, proprietarie o classificate al fine di conseguire un guadagno economico, un vantaggio competitivo o per ragioni politiche. In questa categoria rientrano, ad esempio, la sottrazione di segreti industriali, di informazioni classificate o di propriet\u00e0 intellettuale.",
+          "ID": "Ideology - Ideology identifica gli eventi cyber nei quali un attaccante ha condotto attivit\u00e0 malevole o illecite per diffondere un messaggio di natura ideologica all\u2019organizzazione colpita, ai fruitori del servizio impattato o a qualunque terza parte anche non direttamente coinvolta nell\u2019illecito. Gli eventi cyber che appartengono a questa categoria vengono spesso compiuti dai cosiddetti hacktivisti. A tal proposito di rimanda al valore Hacktivist (\u00a7 3.3.2.2) del predicato Adversary Type (\u00a7 3.3.2).",
+          "IN": "Influence and Disinformation - Influence and Disinformation identifica gli eventi cyber nei quali avviene diffusione intenzionale di notizie o informazioni inesatte o distorte allo scopo di influenzare le azioni e le scelte di qualcuno.",
+          "PR": "Profit - Profit identifica gli eventi cyber in cui un attaccante o un gruppo effettua azioni malevole o illecite al fine di ottenerne in modo diretto o indiretto un profitto. Alcuni esempi: \u2022 richiesta di riscatto in denaro in caso di ransomware; \u2022 richiesta di riscatto in denaro in caso di sextortion; \u2022 phishing finalizzato alla sottrazione di dati bancari; \u2022 infezione con malware di tipo trojan bancari.",
+          "OT": "Other - Other identifica gli eventi cyber relativi ad Adversary Motivation non identificabili con gli altri valori definiti nel sottoinsieme."
+        },
+        "adversaryType": {
+          "CR": "Criminal - Criminal identifica gli eventi cyber in cui l\u2019attaccante o il gruppo che ha causato l\u2019evento pu\u00f2 essere categorizzato nella tipologia pi\u00f9 generica di \u201ccriminale\u201d i cui scopi tendono a generare un profitto dalle azioni svolte.",
+          "HA": "Hacktivist - Hacktivist identifica gli eventi cyber in cui \u00e8 previsto l\u2019uso sovversivo di strumenti digitali al fine di promuovere un\u2019agenda politica o principi di connotazione sociale. Questi gruppi utilizzano tecniche di hacking ad esempio per: \u2022 attaccare siti web per compromettere l\u2019erogazione di servizi o alterarne i contenuti per diffondere messaggi di natura politica o ideologica; \u2022 pubblicare dati governativi classificati per denunciare la mancanza di protezione dei dati da parte delle autorit\u00e0; \u2022 reindirizzare gli utenti su siti gestiti dagli attivisti digitali per diffondere la propria ideologia.",
+          "IN": "Insider - Insider identifica gli eventi cyber in cui un attaccante utilizza le proprie autorizzazioni o le conoscenze acquisite durante le consuete attivit\u00e0 lavorative per compiere un attacco informatico dall\u2019interno della rete dalla quale opera. L\u2019obiettivo di un insider pu\u00f2 essere ad esempio il furto di informazioni sensibili, il danneggiamento di un sistema, il sabotaggio dell\u2019azienda o la vendita delle informazioni trafugate.",
+          "NA": "Nation State - Nation State identifica gli eventi cyber condotti da entit\u00e0 o gruppi statuali o sponsorizzati dallo Stato, ossia gruppi che conducono operazioni cibernetiche avanzate per conto di un governo o di uno Stato sovrano. Questi attori sono sostenuti o autorizzati dal governo del loro paese per perseguire obiettivi di interesse nazionale attraverso attivit\u00e0 di hacking, spionaggio o guerra cibernetica. Questa tipologia di avversario dispone solitamente di risorse significative, tra cui personale altamente qualificato, budget cospicui e accesso a strumenti e tecnologie avanzate. 3.4 ADDITIONAL CONTEXT (AC)"
+        },
+        "abusiveContent": {
+          "DI": "Disturbing Content - Disturbing Content identifica qualsiasi tipo di materiale o informazione diffusa tramite sistemi informatici che pu\u00f2 essere considerato offensivo, inappropriato, dannoso o che possa provocare disagio psicologico o emotivo.",
+          "HA": "Harmful Speech - Harmful speech identifica eventi qualsiasi forma di comunicazione espressa tramite piattaforme digitali che pu\u00f2 causare danno, disagio o discriminazione a individui o gruppi. Tra questi, discorsi corredati da argomenti offensivi quali bullismo, molestie, mobbing, diffamazione o discriminazione contro uno o pi\u00f9 soggetti, con il possibile intento di discreditare e/o diffamare pubblicamente la vittima.",
+          "OT": "Other - Other identifica gli eventi cyber relativi ad Abusive Content non identificabili con gli altri valori definiti nel sottoinsieme."
+        },
+        "assetSourceGeography": {
+          "IT": "Italy - Italy indica che i beni informatici da cui sono state condotte attivit\u00e0 malevole o illecite sono localizzati sul territorio nazionale italiano.",
+          "OT": "Other - Other indica che i beni informatici da cui sono state condotte attivit\u00e0 malevole o illecite sono localizzati al di fuori del territorio nazionale italiano."
+        },
+        "involvedAsset": {
+          "HW-ND_RT": "Router - Router identifica un dispositivo che, in una rete informatica, si occupa di incanalare il traffico tra due o pi\u00f9 dispositivi connessi alla stessa rete o nelle sottoreti.",
+          "HW-ND_SW": "Switch - Switch identifica un dispositivo all'interno di una rete di computer che gestisce il flusso di dati da e verso i computer connessi, attraverso porte di ingresso e di uscita.",
+          "HW-ND_AP": "Access Point - Access Point identifica un dispositivo hardware di rete che permette ai dispositivi Wi-Fi di connettersi a una rete cablata.",
+          "HW-ND_OTH": "Other - Other racchiude tutti gli asset afferenti al sotto-predicato Hardware_Network Device non identificabili con gli altri valori definiti nel sottoinsieme. collegati in rete tra loro \u2013 utilizzati anche in ambito industriale \u2013 che utilizzano la connettivit\u00e0 Internet per comunicare, scambiare dati e monitorare processi.",
+          "HW-IT_DC": "Digital Camera - Digital Camera identifica un dispositivo elettronico capace di catturare e trasmettere immagini e video.",
+          "HW-IT_OTH": "Other - Other racchiude tutti gli asset afferenti al sotto-predicato Hardware \u2013 IoT/IIoT non identificabili con gli altri valori definiti nel sottoinsieme. quali si attua la protezione dei dati, delle reti e dei sistemi informatici rispetto ad accessi non autorizzati, danni, interruzioni o altri rischi",
+          "HW-SA_FW": "Firewall - Firewall identifica un dispositivo o sistema di rete che permette di monitorare e segregare il traffico in entrata ed in uscita, impedendo il traffico di dati non autorizzato tra due reti connesse e proteggendo le risorse di sistema della rete da potenziali minacce esterne.",
+          "HW-SA_HSM": "Hardware Security Module - Hardware Security Module identifica un dispositivo informatico fisico che garantisce la salvaguardia e la gestione di chiavi digitali, nonch\u00e9 l'elaborazione crittografica, a prova di manomissione e di intrusione.",
+          "HW-SA_OTH": "Other - Other racchiude tutti gli asset afferenti al sotto-predicato Hardware \u2013 Security Appliance non identificabili con gli altri valori definiti nel sottoinsieme. che permettono di elaborare e trasmettere i dati.",
+          "HW-CS_SR": "Server - Server identifica un dispositivo fisico o sistema informatico di elaborazione e gestione del traffico di informazioni su una rete, che permette la fruizione delle informazioni da parte dei dispositivi connessi alla stessa rete.",
+          "HW-CS_PRT": "Printer - Printer identifica un dispositivo che converte i dati digitali in testo su un supporto cartaceo.",
+          "HW-CS_WS": "Workstation - Workstation identifica un dispositivo informatico volto a soddisfare le esigenze di elaborazione di un singolo utente. Viene utilizzato per attivit\u00e0 quali la programmazione, l'ingegneria e la progettazione.",
+          "HW-CS_MD": "Mobile Device - Mobile Device identifica dei dispositivi elettronici pienamente utilizzabili e funzionali alla mobilit\u00e0 dell'utente (es. smartphone, tablet, lettori di e-book ecc.) con caratteristiche di elaborazione o accesso ai dati prive di vincoli sulla posizione fisica dell'utente.",
+          "HW-CS_DS": "Data Storage - Data Storage identifica hardware elettronico, elettrostatico o elettrico o altri elementi che consentono l'inserimento di dati e il recupero degli stessi.",
+          "HW-CS_OTH": "Other - Other racchiude tutti gli asset afferenti al sotto-predicato Hardware - Computer System non identificabili con gli altri valori definiti nel sottoinsieme. monitoraggio e controllo di processi fisici e sistemi produttivi nel dominio dell\u2019Operational Tecnology.",
+          "HW-OT_RTU": "Remote Terminal Unit - Remote Terminal Unit identifica unit\u00e0 remote in grado di ricevere e decodificare i messaggi provenienti dal sistema centrale di controllo. Sono in grado di controllare un insieme di componenti elettronici/elettromeccanici e forniscono informazioni sui dispositivi connessi confrontandone gli stati con le richieste pervenute. Possono avere capacit\u00e0 di rete, inclusi collegamenti radio cablati e senza fili per comunicare con il sistema di controllo centrale.",
+          "HW-OT_HMI": "Human Machine Interface - Human Machine Interface identifica una interfaccia hardware che permette agli operatori di interagire con un controllore in modo da monitorare e controllare i processi, configurare le impostazioni e visualizzare le informazioni sullo stato e la storia dei processi.",
+          "HW-OT_PLC": "Programmable Logic Controller - Programmable Logic Controller identifica un sistema elettronico a funzionamento digitale, destinato all\u2019uso in ambito industriale. Possiede moduli di Input/Output (I/O) digitali e analogici e utilizza una memoria programmabile per l\u2019archiviazione delle istruzioni necessarie all\u2019implementazione di funzioni specifiche (logiche, sequenziamento, temporizzazione, conteggio e calcolo) e dei controlli per vari tipi di macchine e processi.",
+          "HW-OT_FID": "Field Device - Field Device identifica un insieme di apparecchiature quali attuatori, sensori, network controller e convertitori di segnali destinati all'uso in ambito industriale. Tali dispositivi trovano le loro applicazioni all'interno delle architetture associate agli Industrial Control Systems (ICS), Distributed Control Systems (DCS), Building automation Systems (BAS), Physical Access Control Systems (PACS).",
+          "HW-OT_IED": "Intelligent Elettronic Device - Intelligent Elettronic Device identifica un dispositivo che incorpora una o pi\u00f9 unit\u00e0 di elaborazione, in grado di ricevere e inviare dati/controlli da o verso altri dispositivi. Pu\u00f2 essere utilizzato per eseguire controlli ed elaborazioni locali. Esempi di tali dispositivi sono i misuratori elettronici multifunzione, rel\u00e8 digitali e controllori.",
+          "HW-OT_OTH": "Other - Other racchiude tutti gli asset afferenti al sotto-predicato Hardware - OT non identificabili con gli altri valori definiti nel sottoinsieme. racchiusi o classificati nei sotto-predicati precedenti.",
+          "HW-OH_ST": "Satellite System - Satellite System identifica un sistema di comunicazione in grado di ricevere segnali dalla Terra e di ritrasmetterli con l'uso di un transponder, un ricevitore e trasmettitore integrato di segnali radio. Un esempio di Satellite System \u00e8 il GPS.",
+          "HW-OH_UAV": "Unmanned Aerial Vehicle - Unmanned Aerial Vehicle identifica velivoli controllati a distanza, in genere tramite un controllore a terra o un sistema computerizzato, utilizzati senza un pilota umano a bordo. Utilizzati per scopi di ricognizione, sorveglianza, e acquisizione di obiettivi.",
+          "HW-OH_RFID": "RFID - RFID identifica una tecnologia di riconoscimento e validazione e/o memorizzazione automatica di informazioni a distanza basata sulla memorizzazione di dati in particolari dispositivi elettronici passivi, capaci di rispondere a chiamate di prossimit\u00e0 da parte di dispositivi attivi, sia fissi che portatili, chiamati reader.",
+          "HW-OH_NFC": "NFC - NFC identifica una tecnologia di ricetrasmissione che fornisce connettivit\u00e0 senza fili (RF) bidirezionale a distanza (contactless) a corto raggio (fino a un massimo di 10 cm).",
+          "HW-OH_OTH": "Other - Other racchiude tutti gli asset afferenti al sotto-predicato Hardware - Other non identificabili con gli altri valori definiti nel sottoinsieme. consentono di astrarre le componenti hardware, cio\u00e8 fisiche, degli elaboratori al fine di renderle disponibili al software in forma di risorsa virtuale.",
+          "HW-VI_OTH": "Other - Other racchiude tutti gli asset afferenti al sotto-predicato Hardware \u2013 Virtualization Infrastructure. in filtrare e bloccare il traffico di dati su un sistema (es. antispam, antivirus, ecc.)",
+          "SW-SS_FO": "Firewall OS - Firewall OS identifica un sistema di rete e/o applicativo che permette di monitorare il traffico in entrata ed in uscita impedendo il traffico di dati non autorizzato tra due reti connesse e proteggendo le risorse di sistema della rete da potenziali minacce esterne.",
+          "SW-SS_AV": "Antivirus - Antivirus identifica un programma che monitora un computer o una rete per identificare tutti i principali tipi di malware e prevenire o contenere incidenti malware.",
+          "SW-SS_IDS": "Intrusion Detection System - Intrusion Detection System identifica un sistema di sicurezza che monitora e analizza gli eventi di rete o di sistema allo scopo di individuare e fornire avvisi sui tentativi di accesso alle risorse di sistema in modo non autorizzato.",
+          "SW-SS_IPS": "Intrusion Prevention System - Intrusion Prevention System identifica un sistema in grado di rilevare un'attivit\u00e0 intrusiva e che pu\u00f2 anche tentare di fermare l'attivit\u00e0, idealmente prima che raggiunga i suoi obiettivi.",
+          "SW-SS_AS": "Antispam - Antispam identifica un insieme di programmi o servizi che bloccano in modo preventivo le mail che potrebbero essere definite come spam.",
+          "SW-SS_SIEM": "Security Information and Event Management - Security Information and Event Management identifica un\u2019applicazione che offre la possibilit\u00e0 di raccogliere dati di sicurezza dai componenti del sistema informativo e presentarli come informazioni utilizzabili tramite un'unica interfaccia.",
+          "SW-SS_PX": "Proxy - Proxy identifica un software che riceve le richieste da uno o pi\u00f9 client (come browser o applicazioni) e le inoltra verso le destinazioni finali su Internet. Il proxy pu\u00f2 filtrare, modificare o registrare le richieste e le risposte, migliorando la sicurezza, la privacy o le prestazioni della rete.",
+          "SW-SS_CA": "Certification Authority - Certification Authority identifica una entit\u00e0 attendibile che emette e revoca certificati di chiave pubblica.",
+          "SW-SS_VP": "Virtual Private Network - Virtual Private Network identifica una rete virtuale costruita sopra le reti esistenti che pu\u00f2 fornire un meccanismo di comunicazione sicuro per i dati e le informazioni IP trasmesse tra le reti.",
+          "SW-SS_AM": "Access Management - Access Management identifica un insieme di processi e applicazioni che consentono la gestione degli accessi per autenticare, autorizzare e verificare l\u2019accesso alle applicazioni e sistemi IT. Esempi di access management sono: Policy Administration, Authentication, and Authorization.",
+          "SW-SS_WAF": "Web Application Firewall - Web Application Firewall identifica un dispositivo di sicurezza che monitora, filtra e blocca il traffico HTTP/HTTPS da e verso le applicazioni web. Il WAF protegge le applicazioni web da attacchi comuni, come, ad esempio, SQL injection, cross-site scripting (XSS) e altri attacchi a livello di applicazione.",
+          "SW-SS_OTH": "Other - Other racchiude tutti gli asset afferenti al sotto-predicato Software \u2013 Security System non identificabili con gli altri valori definiti nel sottoinsieme. e accesso ai dati al fine di supportare la produttivit\u00e0, l'efficienza e il processo decisionale.",
+          "SW-DM_DB": "Database - Database identifica un archivio di informazioni o dati immagazzinati e accessibili per via elettronica.",
+          "SW-DM_BC": "Blockchain - Blockchain identifica una sottofamiglia di tecnologie che consentono la creazione e la gestione di un registro aperto e distribuito per il tracciamento delle transazioni effettuate tra parti, costituito da blocchi contenenti sequenze di dati (token) protetti da crittografia e immodificabili.",
+          "SW-DM_DL": "Data Lake - Data Lake identifica un repository centralizzato che consente di archiviare grandi quantit\u00e0 di dati nel loro formato nativo, siano essi strutturati, semi-strutturati o non strutturati",
+          "SW-DM_BK": "Backup - Backup identifica il processo di messa in sicurezza delle informazioni di un sistema informatico attraverso la creazione di copie di file e programmi realizzati per facilitarne il recupero.",
+          "SW-DM_DV": "Data Vault - Data Vault identifica un modello di data warehousing progettato per fornire una struttura robusta e scalabile per l'integrazione di dati provenienti da diverse fonti.",
+          "SW-DM_OTH": "Other - Other racchiude tutti gli asset afferenti al sotto-predicato Software \u2013 Data Management non identificabili con gli altri valori definiti nel sottoinsieme. monitoraggio e controllo di processi fisici e sistemi produttivi nel dominio dell\u2019Operational Tecnology.",
+          "SW-OT_SCADA": "Supervisory Control And Data Acquisition - Supervisory Control And Data Acquisition identifica un sistema computerizzato che raccoglie ed elabora dati a distanza, consentendo il controllo di processi e impianti complessi. Tale sistema \u00e8 condiviso tra diversi siti o impianti per consentire una gestione centralizzata e la supervisione dei sistemi fisici.",
+          "SW-OT_MOM": "Manufacturing Operations Management - Manufacturing Operations Management identifica i sistemi che gestiscono le operazioni di produzione.",
+          "SW-OT_DCS": "Distributed Control System - Distributed Control System identifica un sistema di controllo impiegato in ambito industriale e legato a sistemi di produzione localizzati in una stessa area geografica (esempio: raffinerie di petrolio, trattamento acque, generazione di energia elettrica, produzione chimica, automobilistica e farmaceutica).",
+          "SW-OT_BAS": "Building Automation System - Building Automation System identifica un sistema di automazione relativo al controllo degli edifici, utilizzato per monitorare e ottimizzare l'uso e l'efficienza dei sottosistemi associati (HVAC, raccolta fumi, vapore, acqua calda, acqua refrigerata, sprinkler e monitoraggio elettrico). Consente agli operatori di accedere, controllare e monitorare tutti i sistemi da un'unica interfaccia, segnalando eventuali anomalie",
+          "SW-OT_PACS": "Physical Access Control System - Physical Access Control System identifica un sistema elettronico di sicurezza fisica che controlla l'accesso alle aree protette tramite opportuna autenticazione e/o autorizzazione.",
+          "SW-OT_CP": "Communication Protocol - Communication Protocol identifica un insieme di regole che definiscono le modalit\u00e0 di comunicazione tra due o pi\u00f9 entit\u00e0. Ogni protocollo \u00e8 progettato con precisi compiti e finalit\u00e0, a seconda delle entit\u00e0 interessate e del mezzo di comunicazione.",
+          "SW-OT_FEP": "Front End Processor - Front End Processor identifica un gateway che permette di interfacciare le HMI con diversi sottosistemi generalmente distribuiti in impianti di grandi dimensioni.",
+          "SW-OT_HS": "Historian - Historian identifica un database centralizzato progettato per raccogliere, memorizzare e supportare l'analisi dei dati utilizzando le tecniche di controllo statistico dei processi.",
+          "SW-OT_MES": "Manufacturing Execution System - Manufacturing Execution System identifica i sistemi utilizzati per raccogliere dati in tempo reale per ottimizzare la produzione.",
+          "SW-OT_OTH": "Other - Other racchiude tutti gli asset afferenti al sotto-predicato Software \u2013 OT non identificabili con gli altri valori definiti nel sottoinsieme. risorse hardware e software di un computer.",
+          "SW-OS_FW": "Firmware - Firmware identifica l\u2019insieme di programmi o di microprogrammi contenuti in una memoria a sola lettura (ROM), che presiedono alle sue fondamentali attivit\u00e0 di funzionamento (controlli d\u2019avvio, gestione delle unit\u00e0 periferiche, istruzioni di base, ecc.).",
+          "SW-OS_WIN": "Windows - Windows identifica il sistema operativo proprietario progettato da Microsoft per gestire e organizzare le risorse hardware e software di un computer e per fornire una piattaforma per l'esecuzione di applicazioni.",
+          "SW-OS_LX": "Linux - Linux identifica l\u2019insieme di sistemi operativi Unix-like gratuiti e open source derivanti da Linux Kernel; permette di gestire e organizzare le risorse hardware e software di un computer e per fornire una piattaforma per l'esecuzione di applicazioni.",
+          "SW-OS_MAC": "MacOS - MacOS identifica il sistema operativo proprietario sviluppato da Apple Inc. basato su Unix, permette di gestire e organizzare le risorse hardware e software di un computer e per fornire una piattaforma per l'esecuzione di applicazioni.",
+          "SW-OS_IOS": "iOS - iOS identifica il sistema operativo mobile proprietario sviluppato da Apple esclusivamente per il proprio hardware, permette di gestire, organizzare ed eseguire le applicazioni mobile.",
+          "SW-OS_AND": "Android - Android identifica il sistema operativo mobile proprietario sviluppato da Google per programmare i dispositivi mobili, permette di gestire, organizzare ed eseguire le applicazioni mobile.",
+          "SW-OS_OTH": "Other - Other racchiude tutti gli asset afferenti al sotto-predicato Software \u2013 Operating System non identificabili con gli altri valori definiti nel sottoinsieme. singola unit\u00e0 fisica di eseguire pi\u00f9 macchine virtuali.",
+          "SW-VS_HY": "Hypervisor - Hypervisor, o virtual machine monitor (VMM), identifica un software, firmware o hardware che crea e gestisce macchine virtuali (VM). Consente a pi\u00f9 sistemi operativi di funzionare contemporaneamente su un singolo host fisico, condividendo le risorse hardware sottostanti.",
+          "SW-VS_OTH": "Other - Other racchiude tutti gli asset afferenti al sotto-predicato Software \u2013 Virtualization Software non identificabili con gli altri valori definiti nel sottoinsieme. gestione di sensori, strumenti, macchine e altri dispositivi collegati in rete tra loro \u2013 utilizzati anche in ambito industriale \u2013 che utilizzano la connettivit\u00e0 Internet per comunicare, scambiare dati e monitorare processi.",
+          "SW-IT_OTH": "Other - Other racchiude tutti gli asset afferenti al sotto-predicato Software \u2013 IoT/IIoT. specifiche funzioni su dispositivi come computer, smartphone o tablet, supportando l'utente in attivit\u00e0 come la produttivit\u00e0, la comunicazione, l'elaborazione multimediale e la gestione dei dati.",
+          "SW-AP_WO": "Web HTTP HTTPS Server - Web HTTP HTTPS Server identifica un dispositivo che fornisce servizi del World Wide Web (WWW) su Internet. Include l'hardware, il sistema operativo, il software del server Web e il contenuto del sito Web (pagine Web).",
+          "SW-AP_ML": "Mail Server Pop SMTP IMAP - Mail Server Pop SMTP IMAP identifica un host che fornisce le funzionalit\u00e0 di una \"posta elettronica\". Memorizza la posta in arrivo per la distribuzione agli utenti e inoltra la posta in uscita.",
+          "SW-AP_DNS": "Naming Server DNS - Naming Server DNS identifica un dispositivo che mantiene un elenco di nomi di dominio, come definito dal Sistema dei Nomi di Dominio (DNS), e li traduce in indirizzi Internet Protocol.",
+          "SW-AP_FTP": "S FTP Server Application - S FTP Server Application identifica uno standard utilizzato per accedere a una rete, elencare directory e copiare file. Fornisce l'autenticazione dell'utente e consente agli utenti di trasferire file ed elencare directory.",
+          "SW-AP_SSH": "Remote S Shell Server Application - Remote S Shell Server Application identifica un programma che, in esecuzione su un computer o server, ascolta le connessioni in entrata da client remoti. Una volta stabilita la connessione, l'applicazione server fornisce al client una shell interattiva, consentendo all'utente remoto di eseguire comandi e gestire il sistema come se fosse fisicamente presente.",
+          "SW-AP_NTP": "NTP Server Application - NTP Server Application identifica un\u2019applicazione che fornisce il servizio di sincronizzazione dell'orario su una rete utilizzando il protocollo NTP, con lo scopo di distribuire un orario preciso a dispositivi e sistemi connessi.",
+          "SW-AP_IRC": "Chat IRC Server Application - Chat IRC Server Application identifica un programma che, in esecuzione su un server, facilita la comunicazione testuale tra client IRC. Agisce come punto di collegamento centrale, ricevendo e distribuendo messaggi tra gli utenti connessi, organizzati in \"canali\" di discussione.",
+          "SW-AP_RPC": "RPC Server Application - RPC Server Application identifica un programma che consente di eseguire una procedura su un server remoto, trasferendo il flusso di controllo e alcuni argomenti dal client al server, eseguendo la richiesta e restituendo i risultati.",
+          "SW-AP_LDAP": "LDAP Server Application - LDAP Server Application identifica un'interfaccia server-to-server per lo scambio di informazioni tra directory, ideata come un'implementazione a basso costo e pi\u00f9 semplice del protocollo di accesso alla directory X.500. Facilita l'implementazione della replica e della concatenazione tra directory dissimili.",
+          "SW-AP_RTSP": "RTSP Server Application - RTSP Server Application identifica un programma che, in esecuzione su un server, consente ai client di controllare la riproduzione di flussi audio e video in streaming. Utilizza il protocollo RTSP per stabilire e gestire sessioni di streaming, consentendo ai client di avviare, mettere in pausa, interrompere e controllare la riproduzione di contenuti multimediali.",
+          "SW-AP_OTH": "Other - Other racchiude tutti gli asset afferenti al sotto-predicato Software \u2013 Application non identificabili con gli altri valori definiti nel sottoinsieme. racchiusi o classificati nei sotto-predicati precedenti.",
+          "SW-OH_TL": "Third Party Library Framework - Third Party Library Framework identifica Librerie o Framework di riferimento appartenenti a fonti esterne.",
+          "SW-OH_AI": "AI Service - AI Service identifica un servizio capace di riprodurre o sostituire l'attivit\u00e0 umana mediante decisioni complesse prese in maniera autonoma da parte di computer o macchine. Applicabile in ambito IoT, Industria 4.0, cos\u00ec come in altre aree di applicazione.",
+          "SW-OH_OTH": "Other - Other racchiude tutti gli asset afferenti al sotto-predicato Software \u2013 Other non identificabili con gli altri valori definiti nel sottoinsieme. specifico processo aziendale o attivit\u00e0 dell'organizzazione.",
+          "IT_CO": "Confidential Data - Confidential Data identifica dati per cui \u00e8 necessaria l'autorizzazione per potervi accedere. \u00c8 possibile concedere l'autorizzazione a specifici dipendenti o fornitori esterni.",
+          "IT_CL": "Classified Data - Classified Data identifica ogni informazione, atto, attivit\u00e0, documento, cui sia stata attribuita una delle classifiche di segretezza previste dalla legge.",
+          "IT_IU": "Internal Use Data - Internal Use Data identifica dati il cui accesso \u00e8 limitato ai soli soggetti interni all'organizzazione.",
+          "IT_PD": "Public Data - Public Data identifica dati disponibili pubblicamente sia a livello locale che sulla rete internet. Tali dati non richiedono particolari misure di sicurezza e la loro eventuale divulgazione non comporterebbe violazioni delle normative o impatti all\u2019organizzazione.",
+          "IT_JD": "Judicial Data - Judicial Data identifica dati contenenti informazioni relative ad elementi giudiziari o a provvedimenti in atto.",
+          "IT_OT": "Other - Other racchiude tutti gli asset afferenti al sotto-predicato Information Type non identificabili con gli altri valori definiti nel sottoinsieme. una funzione essenziale, un servizio essenziale, un asset ICT o una delle sue componenti.",
+          "PE_EM": "Employee - Employee identifica persone che lavorano con vincolo di subordinazione per conto di un'azienda o un'organizzazione in forza di un contratto di lavoro, e che percepiscono una remunerazione a fronte del lavoro effettuato.",
+          "PE_CO": "Contractor - Contractor identifica una organizzazione che fornisce competenze o servizi ad altre organizzazioni per un periodo determinato su base contrattuale.",
+          "PE_EX": "External Consultant - External Consultant identifica professionisti che forniscono competenze o servizi ad individui o organizzazioni per un periodo determinato su base contrattuale.",
+          "PE_OT": "Other - Other racchiude tutti gli asset afferenti al sotto-predicato People non identificabili con gli altri valori definiti nel sottoinsieme. edifici, stanze, uffici e container, insieme ai servizi essenziali e alle utenze fornite da operatori/fornitori esterni, alla fornitura di energia elettrica e acqua.",
+          "LO_HQ": "Headquarter - Headquarter identifica la struttura fisica destinata ad accogliere al suo interno personale e/o attivit\u00e0 connesse all'operativit\u00e0 dell'organizzazione.",
+          "LO_DC": "Data Center - Data Center identifica strutture centralizzate che ospitano attrezzature di elaborazione e networking, comunemente note come attrezzature di tecnologia dell'informazione (IT) e infrastrutture di rete.",
+          "LO_MI": "Management Infrastructure - Management Infrastructure identifica mezzi di trasmissione, tralicci, cabine, stazioni, sistemi di trasporto, pareti, stanze, edifici o qualsiasi oggetto fisico che sia in qualche modo coinvolto nel controllo, nel monitoraggio o nell'analisi dei processi produttivi o nel supporto dell'attivit\u00e0 generale.",
+          "LO_OT": "Other - Other racchiude tutti gli asset afferenti al sotto-predicato Location non identificabili con gli altri valori definiti nel sottoinsieme. o classificati nei sotto-predicati precedenti.",
+          "OT_PP": "Policy and Procedure - Policy and Procedure identifica la documentazione in formato cartaceo o digitale contenente i principi generali dell'organizzazione o di determinati processi o aree aziendali (policy), o documentazione contente un obiettivo limitato (procedure).",
+          "OT_DO": "Documentation - Documentation identifica tutti i documenti rilevanti per l\u2019organizzazione e che supportano i processi aziendali come ad esempio manuali operativi.",
+          "OT_PA": "Privileged Account - Privileged Account identifica un\u2019utenza che ha un ruolo di alto livello in termini di autorizzazione nella gestione di un sistema informatico tale da modificarne le componenti critiche. Ad esempio: la compromissione di un account di amministratore locale o di dominio.",
+          "OT_UA": "Unprivileged Account - Unprivileged Account identifica un utente con permessi limitati di accesso e di modifica a un sistema o a un\u2019infrastruttura di rete. Un esempio \u00e8 rappresentato da un attacco che \u00e8 iniziato dalla compromissione di un account utente.",
+          "OT_OT": "Other - Other racchiude tutti gli asset afferenti al sotto-predicato Other non identificabili con gli altri valori definiti nel sottoinsieme."
+        },
+        "outlook": {
+          "IM": "Improving - Improving identifica un evento cyber in corso per il quale si prevede una riduzione dell\u2019impatto nelle successive sei ore dal momento del rilevamento.",
+          "ST": "Stable - Stable identifica un evento cyber in corso per il quale si prevede che l\u2019impatto rimanga invariato nelle successive sei ore dal momento del rilevamento.",
+          "WO": "Worsening - Worsening identifica un evento cyber in corso per il quale si prevede che l\u2019impatto si aggravi nelle successive sei ore dal momento del rilevamento."
+        },
+        "physicalSecurity": {
+          "SA": "Sabotage - Sabotage identifica qualsiasi azione intenzionale volta a danneggiare, distruggere o alterare il funzionamento della risorsa informatica o parti di questa. Queste azioni sono compiute con lo scopo di causare la perdita totale o parziale della disponibilit\u00e0 della risorsa informatica.",
+          "TH": "Theft and Burglary - Theft and Bulglary identifica gli eventi cyber conseguenti al furto di un bene informatico o parti di esso.",
+          "UN": "Unauthorized Access - Unauthorized Access identica gli eventi cyber che si verificano quando chiunque ottiene, senza autorizzazione, accesso fisico ad un bene informatico.",
+          "OT": "Other - Other identifica gli eventi cyber relativi a Physical Security non identificabili con gli altri valori definiti nel sottoinsieme."
+        },
+        "operatingSystem": {
+          "SW-OS_FW": "Firmware - Firmware identifica l\u2019insieme di programmi o di microprogrammi contenuti in una memoria a sola lettura (ROM), che presiedono alle sue fondamentali attivit\u00e0 di funzionamento.",
+          "SW-OS_WIN": "Windows - Windows identifica il sistema operativo proprietario progettato da Microsoft.",
+          "SW-OS_LX": "Linux - Linux identifica l\u2019insieme di sistemi operativi Unix-like gratuiti e open source derivanti da Linux Kernel.",
+          "SW-OS_MAC": "MacOS - MacOS identifica il sistema operativo proprietario sviluppato da Apple Inc. basato su Unix.",
+          "SW-OS_IOS": "iOS - iOS identifica il sistema operativo mobile proprietario sviluppato da Apple esclusivamente per il proprio hardware.",
+          "SW-OS_AND": "Android - Android identifica il sistema operativo mobile proprietario sviluppato da Google per programmare i dispositivi mobili.",
+          "SW-OS_OTH": "Other - Other racchiude tutti gli asset afferenti al sotto-predicato Software \u2013 Operating System non identificabili con gli altri valori definiti nel sottoinsieme."
+        },
+        "vector": {
+          "AB": "Abuse of Functionality - Abuse of Functionality identifica gli eventi cyber in cui un attore malevolo sfrutta in modo intenzionale e non convenzionale le funzionalità fornite da un’applicazione o un sito web.",
+          "CO": "Compromised Domain - Compromised Domain specifica se l’evento ha interessato un dominio internet lecito che viene utilizzato per veicolare attacchi informatici.",
+          "DR": "Drive-by Compromise - Drive-by Compromise identifica gli eventi cyber in cui un utente, tramite la navigazione di un sito web, viene esposto a possibili attacchi.",
+          "EM": "E-mail - E-mail identifica gli eventi cyber che utilizzano come vettore d’attacco una casella di posta elettronica (PEC, PEL o PEO).",
+          "EV": "Exploiting Vulnerabilities - Exploiting Vulnerabilities identifica gli eventi cyber in cui un attaccante tenta o riesce a sfruttare vulnerabilità di un bene informatico al fine di accedervi.",
+          "EX": "External Remote Services - External Remote Services identifica gli eventi cyber in cui un attore malevolo sfrutta i servizi remoti esposti per accedere e/o persistere all’interno di un bene informatico.",
+          "HA": "Hardware Additions - Hardware Additions identifica gli eventi cyber in cui un attore malevolo utilizza, in modo non autorizzato, dispositivi hardware per eseguire azioni malevole o illecite.",
+          "SO": "Social Media - Social Media identifica gli eventi cyber che utilizzano come vettore d’attacco una piattaforma social per perpetrare attività malevole.",
+          "SU": "Supply Chain - Supply Chain identifica gli eventi cyber che utilizzano come vettore d’attacco prodotti o servizi forniti da terze parti all’interno della catena di approvvigionamento.",
+          "VA": "Valid Accounts - Valid Accounts identifica gli eventi cyber che utilizzano come vettore d’attacco un account valido.",
+          "OT": "Other - Other identifica gli eventi cyber relativi a Vector non identificabili con gli altri valori definiti nel sottoinsieme."
+        }
+      }
+    };
+
+    const acnMap = {
+      impact: { prefix: 'BC', code: 'IM' },
+      rootCause: { prefix: 'BC', code: 'RO' },
+      severity: { prefix: 'BC', code: 'SE' },
+      victimGeography: { prefix: 'BC', code: 'VG' },
+      activeScanning: { prefix: 'TT', code: 'AS' },
+      availability: { prefix: 'TT', code: 'AV' },
+      fraud: { prefix: 'TT', code: 'FR' },
+      brandAbuse: { prefix: 'TT', code: 'BA' },
+      dataExposure: { prefix: 'TT', code: 'DE' },
+      informationGathering: { prefix: 'TT', code: 'IG' },
+      maliciousCode: { prefix: 'TT', code: 'MA' },
+      socialEngineering: { prefix: 'TT', code: 'SO' },
+      vulnerability: { prefix: 'TT', code: 'VU' },
+      adversaryMotivation: { prefix: 'TA', code: 'AM' },
+      adversaryType: { prefix: 'TA', code: 'AD' },
+      abusiveContent: { prefix: 'AC', code: 'AB' },
+      assetSourceGeography: { prefix: 'AC', code: 'AS' },
+      involvedAsset: { prefix: 'AC', code: 'IN' },
+
+      outlook: { prefix: 'AC', code: 'OU' },
+      physicalSecurity: { prefix: 'AC', code: 'PH' },
+      vector: { prefix: 'AC', code: 'VE' },
+      operatingSystem: { prefix: 'AC', code: 'OS' },
+    };
+
+    // Reverse map: { 'BC:IM': 'impact', ... }
+    const acnReverseMap = {};
+    Object.entries(acnMap).forEach(([name, obj]) => {
+      acnReverseMap[`${obj.prefix}:${obj.code}`] = name;
+    });
+
+    function generateVectorString() {
+      const form = document.getElementById('acnForm');
+      const selects = form.querySelectorAll('select');
+      
+      // Mandatory Baseline Fields
+      const baselineFields = ['impact', 'rootCause', 'severity', 'victimGeography'];
+      const missing = [];
+      
+      baselineFields.forEach(f => {
+        const sel = form.elements[f];
+        if (!sel || !sel.value) {
+          const label = sel?.closest('label')?.querySelector('span')?.textContent?.replace(':', '') || f;
+          missing.push(label);
+        }
+      });
+
+      if (missing.length > 0) {
+        return { 
+          valid: false, 
+          error: `Errore: La Baseline Characterization deve essere completata. Mancano: ${missing.join(', ')}.` 
+        };
+      }
+
+      const parts = [];
+      selects.forEach(sel => {
+        const val = sel.value;
+        if (val && acnMap[sel.name]) {
+          parts.push(`${acnMap[sel.name].prefix}:${acnMap[sel.name].code}_${val}`);
+        }
+      });
+      return { valid: true, vector: parts.join(' ') };
+    }
+
+    function parseVectorString(vector) {
+      // Esempio: BC:IM-AP BC:RO-MA ...
+      const parts = vector.trim().split(/\s+/);
+      const values = {};
+      let mapped = 0;
+      parts.forEach(part => {
+        const m = part.match(/^([A-Z]{2}:[A-Z0-9\-]+)_([A-Za-z0-9_\.-]+)$/);
+        if (m) {
+          const key = acnReverseMap[m[1]];
+          if (key) {
+            values[key] = m[2];
+            mapped++;
+          }
+        }
+      });
+      return { values, mapped, total: parts.length };
+    }
+
+    // Global floating tooltip (fixed-position, avoids all overflow/clipping issues)
+    function initializeTooltips() {
+
+      // Ensure the global tooltip panel exists in body
+      if (!document.getElementById('global-tooltip')) {
+        const gt = document.createElement('div');
+        gt.id = 'global-tooltip';
+        document.body.appendChild(gt);
+      }
+
+      const form = document.getElementById('acnForm');
+      const labels = form.querySelectorAll('label');
+
+      labels.forEach((label) => {
+        const select = label.querySelector('select');
+        const span = label.querySelector('span');
+        if (!select || !span) return;
+
+        const category = select.name;
+        const categoryDesc = descriptions.categories[category];
+
+        // Create tooltip icon if not already present
+        let tooltipContainer = label.querySelector('.tooltip-container');
+        if (!tooltipContainer) {
+          tooltipContainer = document.createElement('div');
+          tooltipContainer.className = 'tooltip-container';
+          const svgNS = 'http://www.w3.org/2000/svg';
+          const infoIcon = document.createElementNS(svgNS, 'svg');
+          infoIcon.setAttribute('class', 'info-icon');
+          infoIcon.setAttribute('width', '16');
+          infoIcon.setAttribute('height', '16');
+          infoIcon.setAttribute('viewBox', '0 0 24 24');
+          infoIcon.setAttribute('fill', 'none');
+          infoIcon.setAttribute('stroke', 'currentColor');
+          infoIcon.setAttribute('stroke-width', '2');
+          infoIcon.setAttribute('stroke-linecap', 'round');
+          infoIcon.setAttribute('stroke-linejoin', 'round');
+          infoIcon.innerHTML = '<circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line>';
+          tooltipContainer.appendChild(infoIcon);
+          span.appendChild(tooltipContainer);
+        }
+
+        // Build rich tooltip HTML with category description + all options
+        const categoryOptions = descriptions.options && descriptions.options[category];
+        const optionItems = Array.from(select.options)
+          .filter(opt => opt.value)
+          .map(opt => {
+            const desc = categoryOptions && categoryOptions[opt.value];
+            if (!desc) return '';
+            const dashIdx = desc.indexOf(' - ');
+            const name = dashIdx > -1 ? desc.substring(0, dashIdx) : opt.text;
+            const definition = dashIdx > -1 ? desc.substring(dashIdx + 3) : desc;
+            return '<li class="tooltip-option-item"><strong>' + name + '</strong>' + definition + '</li>';
+          })
+          .filter(h => h)
+          .join('');
+
+        tooltipContainer.dataset.tooltipHtml =
+          '<div class="tooltip-title">' + category + '</div>' +
+          '<div class="tooltip-category-desc">' + (categoryDesc || '') + '</div>' +
+          '<div class="tooltip-options-header">Opzioni disponibili:</div>' +
+          '<ul class="tooltip-options-list">' +
+          (optionItems || '<li class="tooltip-option-item">(nessuna opzione)</li>') +
+          '</ul>';
+
+        // Show on hover (desktop) AND click/tap (touch + automation)
+        tooltipContainer.addEventListener('mouseenter', function () {
+          const gt = document.getElementById('global-tooltip');
+          if (!gt) return;
+          gt.innerHTML = this.dataset.tooltipHtml;
+          gt.classList.add('visible');
+          positionGlobalTooltip(gt, this);
+        });
+        tooltipContainer.addEventListener('mouseleave', function (e) {
+          // Don't hide if moving into the tooltip itself
+          const gt = document.getElementById('global-tooltip');
+          if (gt && !gt.contains(e.relatedTarget)) {
+            gt.classList.remove('visible');
+          }
+        });
+        tooltipContainer.addEventListener('click', function (e) {
+          e.stopPropagation();
+          const gt = document.getElementById('global-tooltip');
+          if (!gt) return;
+          const isVisible = gt.classList.contains('visible') &&
+            gt.dataset.anchorCategory === category;
+          if (isVisible) {
+            gt.classList.remove('visible');
+          } else {
+            gt.innerHTML = this.dataset.tooltipHtml;
+            gt.dataset.anchorCategory = category;
+            gt.classList.add('visible');
+            positionGlobalTooltip(gt, this);
+          }
+        });
+
+        // Native title fallback for select options
+        const catOpts = descriptions.options && descriptions.options[category];
+        Array.from(select.options).forEach(opt => {
+          if (opt.value && catOpts && catOpts[opt.value]) opt.title = catOpts[opt.value];
+        });
+      });
+    }
+
+    function positionGlobalTooltip(tooltip, anchor) {
+      const rect = anchor.getBoundingClientRect();
+      const vw = window.innerWidth, vh = window.innerHeight, m = 12, tw = 380;
+      const th = Math.min(tooltip.scrollHeight || 280, 440);
+      let top = rect.top - th - m;
+      let left = rect.left + rect.width / 2 - tw / 2;
+      if (top < m) top = rect.bottom + m;
+      if (left < m) left = m;
+      if (left + tw > vw - m) left = vw - tw - m;
+      if (top + th > vh - m) top = Math.max(m, vh - th - m);
+      if (top < m) top = m;
+      tooltip.style.left = left + 'px';
+      tooltip.style.top = top + 'px';
+      tooltip.style.width = tw + 'px';
+    }
+
+    // Close global tooltip when clicking outside
+    document.addEventListener('click', function (e) {
+      const gt = document.getElementById('global-tooltip');
+      if (gt && !gt.contains(e.target) && !e.target.closest('.tooltip-container')) {
+        gt.classList.remove('visible');
+      }
+    });
+
+    // Aggiorna le descrizioni sotto al vettore
+    function updateDescriptions() {
+      const descriptionsContainer = document.getElementById('selectionDescriptions');
+      descriptionsContainer.innerHTML = '';
+
+      const form = document.getElementById('acnForm');
+      const selects = form.querySelectorAll('select');
+      const selectedDescriptions = [];
+
+      selects.forEach(select => {
+        if (select.value) {
+          const category = select.name;
+          const value = select.value;
+          const option = select.options[select.selectedIndex];
+
+          const optionDescRaw = (descriptions.options && descriptions.options[category]) ? (descriptions.options[category][value] || '') : '';
+
+          let cleanOptionDesc = optionDescRaw;
+          if (optionDescRaw.includes(' - ')) {
+            cleanOptionDesc = optionDescRaw.split(' - ').slice(1).join(' - ');
+          }
+
+          if (cleanOptionDesc) {
+            const descriptionHtml = `
+              <div class="selection-description">
+                <h4>
+                  ${option.text}
+                  <span class="category">(${category})</span>
+                </h4>
+                <p>${cleanOptionDesc}</p>
+              </div>
+            `;
+
+            selectedDescriptions.push(descriptionHtml);
+          }
+        }
+      });
+
+      const selectionDetails = document.getElementById('selectionDetails');
+      if (selectedDescriptions.length > 0) {
+        descriptionsContainer.innerHTML = selectedDescriptions.join('');
+        if (selectionDetails) selectionDetails.style.display = 'block';
+      } else {
+        descriptionsContainer.innerHTML = '';
+        if (selectionDetails) selectionDetails.style.display = 'none';
+      }
+    }
+
+    // Load taxonomy and initialize everything on DOM ready
+    document.addEventListener('DOMContentLoaded', () => {
+      // Initialize with embedded taxonomy data (CORS safe for local use)
+      if (typeof taxonomyBackup !== 'undefined' && taxonomyBackup) {
+        descriptions = taxonomyBackup;
+        console.log('✓ Taxonomy initialized from embedded backup');
+      }
+
+      initializeTooltips();
+      updateHighlights();
+      updateDescriptions();
+      initializeAI();
+
+      // Setup theme toggle (Default to dark)
+      const themeToggle = document.getElementById('themeToggle');
+      const saved = localStorage.getItem('acnTheme');
+      if (saved === 'dark' || !saved) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        if (themeToggle) themeToggle.checked = true;
+      }
+      if (themeToggle) {
+        themeToggle.addEventListener('change', function (e) {
+          if (e.target.checked) {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            localStorage.setItem('acnTheme', 'dark');
+          } else {
+            document.documentElement.removeAttribute('data-theme');
+            localStorage.setItem('acnTheme', 'light');
+          }
+        });
+      }
+
+      // Setup select change listeners
+      const form = document.getElementById('acnForm');
+      const selects = form.querySelectorAll('select');
+      selects.forEach(sel => {
+        sel.addEventListener('change', () => {
+          updateHighlights();
+          updateDescriptions();
+        });
+      });
+      // Setup Copy Vector
+      document.getElementById('copyVectorBtn').addEventListener('click', function () {
+        const vector = document.getElementById('vectorString').textContent;
+        if (vector && vector !== '(Nessuna selezione)') {
+          navigator.clipboard.writeText(vector).then(() => {
+            const original = this.innerHTML;
+            this.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px;"><polyline points="20 6 9 17 4 12"></polyline></svg> Copiato!';
+            this.classList.add('success');
+            setTimeout(() => {
+              this.innerHTML = original;
+              this.classList.remove('success');
+            }, 2000);
+          });
+        }
+      });
+
+      // Setup Export Image
+      document.getElementById('exportImageBtn').addEventListener('click', () => {
+        const target = document.getElementById('acnForm');
+        if (!target) return;
+
+        const originalBtn = document.getElementById('exportImageBtn');
+        const originalText = originalBtn.innerHTML;
+        originalBtn.innerHTML = 'Generazione...';
+        originalBtn.disabled = true;
+
+        // Get actual computed theme to pass into the capture
+        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        const bgColor = isDark ? '#09090b' : '#f0fdfa';
+
+        html2canvas(target, {
+          backgroundColor: bgColor,
+          useCORS: true,
+          scale: 4,
+          logging: false,
+          padding: 30,
+          onclone: (clonedDoc) => {
+            const theme = isDark ? 'dark' : 'light';
+            clonedDoc.documentElement.setAttribute('data-theme', theme);
+
+            const clonedTarget = clonedDoc.getElementById('acnForm');
+            if (clonedTarget) {
+              // Force solid backgrounds for better contrast in export
+              const cards = clonedDoc.querySelectorAll('.card');
+              cards.forEach(card => {
+                card.style.background = isDark ? '#18181b' : '#ffffff';
+                card.style.opacity = '1';
+                card.style.backdropFilter = 'none';
+                card.style.webkitBackdropFilter = 'none';
+                card.style.border = isDark ? '1px solid rgba(255,255,255,0.1)' : '1px solid #e2e8f0';
+              });
+
+              const selects = clonedDoc.querySelectorAll('select, input, textarea');
+              selects.forEach(el => {
+                el.style.background = isDark ? '#27272a' : '#ffffff';
+                el.style.opacity = '1';
+              });
+
+              // Ensure the form itself has the right layout
+              clonedTarget.style.background = 'transparent';
+              clonedTarget.style.padding = '10px';
+            }
+          }
+        }).then(canvas => {
+          const link = document.createElement('a');
+          const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
+          link.download = `ACN_Mapping_${timestamp}.png`;
+          link.href = canvas.toDataURL('image/png');
+          link.click();
+
+          originalBtn.innerHTML = originalText;
+          originalBtn.disabled = false;
+        }).catch(err => {
+          console.error('Export error:', err);
+          originalBtn.innerHTML = 'Errore ❌';
+          setTimeout(() => {
+            originalBtn.innerHTML = originalText;
+            originalBtn.disabled = false;
+          }, 3000);
+        });
+      });
+    });
+
+    // Add event listeners for buttons
+    document.getElementById('generateVectorBtn').addEventListener('click', function () {
+      const result = generateVectorString();
+      const vectorEl = document.getElementById('vectorString');
+      const errorEl = document.getElementById('vectorError');
+      const copyBtn = document.getElementById('copyVectorBtn');
+      const exportBtn = document.getElementById('exportImageBtn');
+
+      if (!result.valid) {
+        if (errorEl) {
+          errorEl.textContent = result.error;
+          errorEl.style.display = 'block';
+        }
+        vectorEl.textContent = '(Selezione incompleta)';
+        if (copyBtn) copyBtn.disabled = true;
+        if (exportBtn) exportBtn.disabled = true;
+      } else {
+        if (errorEl) errorEl.style.display = 'none';
+        vectorEl.textContent = result.vector;
+        if (copyBtn) copyBtn.disabled = false;
+        if (exportBtn) exportBtn.disabled = false;
+      }
+
+      updateHighlights();
+      updateDescriptions();
+      evaluateReportingRequirement();
+
+      // AI Summary button refresh
+      if (typeof refreshAIButtonState === 'function') refreshAIButtonState();
+
+      // Dim non selezionati: rendi trasparenti e non cliccabili i select senza valore
+      const form = document.getElementById('acnForm');
+      const selects = form.querySelectorAll('select');
+      selects.forEach(sel => {
+        if (!sel.value) {
+          sel.classList.add('dimmed');
+        } else {
+          sel.classList.remove('dimmed');
+        }
+      });
+      // Dim entire cards that have no selected selects
+      const cards = document.querySelectorAll('.card');
+      cards.forEach(card => {
+        const anySelected = card.querySelectorAll('select').length && Array.from(card.querySelectorAll('select')).some(s => s.value);
+        if (!anySelected) card.classList.add('dimmed'); else card.classList.remove('dimmed');
+      });
+    });
+
+    document.getElementById('populateSelectsBtn').addEventListener('click', function () {
+      const vectorInput = document.getElementById('vectorInput').value.trim();
+      const errorBox = document.getElementById('reverseError');
+      errorBox.style.display = 'none';
+      if (!vectorInput) {
+        errorBox.textContent = 'Inserisci un vettore ACN.';
+        errorBox.style.display = 'block';
+        return;
+      }
+      const { values, mapped, total } = parseVectorString(vectorInput);
+      if (mapped === 0) {
+        errorBox.textContent = 'Nessun campo riconosciuto dal vettore inserito. Controlla la sintassi.';
+        errorBox.style.display = 'block';
+        return;
+      }
+      if (mapped < total) {
+        errorBox.textContent = `Attenzione: solo ${mapped} su ${total} campi sono stati riconosciuti. Alcuni elementi potrebbero essere errati o non mappabili.`;
+        errorBox.style.display = 'block';
+      }
+      const form = document.getElementById('acnForm');
+      const selects = form.querySelectorAll('select');
+      selects.forEach(sel => {
+        if (values[sel.name]) {
+          sel.value = values[sel.name];
+        } else {
+          sel.value = '';
+        }
+      });
+      updateHighlights();
+      // After populating, ensure nothing is dimmed and everything is editable
+      document.querySelectorAll('.dimmed').forEach(el => el.classList.remove('dimmed'));
+      
+      updateDescriptions();
+      evaluateReportingRequirement();
+      // Auto-switch back to mapping tab
+      showTab('tab-manual');
+    });
+
+    document.getElementById('resetBtn').addEventListener('click', function () {
+      const form = document.getElementById('acnForm');
+      form.reset();
+      document.getElementById('vectorString').textContent = '';
+      const vectorError = document.getElementById('vectorError');
+      if (vectorError) {
+        vectorError.textContent = '';
+        vectorError.style.display = 'none';
+      }
+      document.getElementById('vectorInput').value = '';
+      document.getElementById('reverseError').style.display = 'none';
+      updateHighlights();
+      // Restore interactivity
+      form.querySelectorAll('select.dimmed').forEach(s => s.classList.remove('dimmed'));
+      document.querySelectorAll('.card.dimmed').forEach(c => c.classList.remove('dimmed'));
+      updateDescriptions();
+      document.getElementById('reportingEvaluation').style.display = 'none';
+
+      // Disable export/copy
+      const copyBtn = document.getElementById('copyVectorBtn');
+      const exportBtn = document.getElementById('exportImageBtn');
+      if (copyBtn) copyBtn.disabled = true;
+      if (exportBtn) exportBtn.disabled = true;
+
+      // AI Summary clear
+      const summaryContent = document.getElementById('summaryContent');
+      if (summaryContent) summaryContent.innerHTML = '<p class="text-muted">Seleziona i campi e clicca "Genera Sintesi".</p>';
+
+      if (typeof refreshAIButtonState === 'function') refreshAIButtonState();
+    });
+
+    // Evidenzia i select con valore diverso dal default
+    function updateHighlights() {
+      const form = document.getElementById('acnForm');
+      const selects = form.querySelectorAll('select');
+      selects.forEach(sel => {
+        if (sel.value && sel.value !== "") {
+
+
+          sel.classList.add('evidenziato');
+        } else {
+          sel.classList.remove('evidenziato');
+        }
+      });
+    }
+
+
+
+    function refreshAIButtonState() {
+      const generateSummaryBtn = document.getElementById('generateSummary');
+      const modelSelect = document.getElementById('aiModel');
+      const vectorText = document.getElementById('vectorString')?.textContent;
+
+      const hasModel = (modelSelect && !!modelSelect.value) || !!localStorage.getItem('aiModel');
+      const hasVector = vectorText && vectorText !== '' && vectorText !== '(Nessuna selezione)';
+
+      if (generateSummaryBtn) {
+        generateSummaryBtn.disabled = !(hasModel && hasVector);
+      }
+
+      const vbBtn = document.getElementById('vectorBuilderBtn');
+      if (vbBtn) {
+        vbBtn.disabled = !hasModel;
+      }
+    }
+
+    // AI integration (modified)
+    async function loadAvailableModels() {
+      const apiKeyInput = document.getElementById('apiKey');
+      const apiUrlInput = document.getElementById('apiUrl');
+      const modelSelect = document.getElementById('aiModel');
+      const errorElement = document.getElementById('aiError');
+      const generateBtn = document.getElementById('generateSummary');
+
+      // prefer input values, fallback to localStorage
+      const apiKey = (apiKeyInput && apiKeyInput.value) || localStorage.getItem('aiApiKey');
+      const apiUrl = (apiUrlInput && apiUrlInput.value) || localStorage.getItem('aiApiUrl');
+
+      if (!apiKey) {
+        if (errorElement) {
+          errorElement.textContent = 'È necessaria la chiave API per recuperare i modelli. Inseriscila e clicca "Recupera Modelli".';
+          errorElement.style.display = 'block';
+        }
+        return;
+      }
+
+      if (!modelSelect) return;
+
+      try {
+        if (errorElement) { errorElement.style.display = 'none'; }
+        const provider = (document.getElementById('aiProvider')?.value) || localStorage.getItem('aiProvider') || 'openai';
+
+        let url = `${apiUrl.replace(/\/+$/, '')}/models`;
+        let headers = { 'Content-Type': 'application/json' };
+
+        if (provider === 'openai') {
+          headers['Authorization'] = `Bearer ${apiKey}`;
+        } else if (provider === 'google') {
+          // Google Gemini uses ?key= API_KEY
+          url = `${apiUrl.replace(/\/+$/, '')}/v1beta/models?key=${apiKey}`;
+        } else if (provider === 'claude') {
+          // Claude doesn't have a simple dynamic model list via CORS easily, 
+          // we'll populate some defaults if it fails or just use static
+          headers['x-api-key'] = apiKey;
+          headers['anthropic-version'] = '2023-06-01';
+          // Claude doesn't have a standard /models list like OpenAI, return a mock or try anyway
+        }
+
+        if (provider === 'claude') {
+          // For Claude, we manually populate the most common models
+          modelSelect.innerHTML = '<option value="">seleziona..</option>';
+          ['claude-3-opus-20240229', 'claude-3-sonnet-20240229', 'claude-3-haiku-20240307', 'claude-2.1'].forEach(m => {
+            const opt = document.createElement('option');
+            opt.value = m;
+            opt.textContent = m;
+            modelSelect.appendChild(opt);
+          });
+        } else {
+          const resp = await fetch(url, { headers });
+
+          if (!resp.ok) {
+            const errData = await resp.json().catch(() => null);
+            const msg = errData?.error?.message || `Errore HTTP ${resp.status}`;
+            throw new Error(msg);
+          }
+
+          const data = await resp.json();
+          modelSelect.innerHTML = '<option value="">seleziona..</option>';
+
+          let models = [];
+          if (provider === 'google') {
+            models = (data.models || []).map(m => ({ id: m.name.split('/').pop(), name: m.displayName }));
+          } else {
+            models = (data.data || []);
+          }
+
+          models.forEach(m => {
+            const opt = document.createElement('option');
+            opt.value = m.id || m.name || m.model || '';
+            opt.textContent = m.name || m.id || opt.value;
+            modelSelect.appendChild(opt);
+          });
+        }
+
+        // If there is a saved model, select it if present
+        const savedModel = localStorage.getItem('aiModel');
+        if (savedModel && modelSelect.querySelector(`option[value="${savedModel}"]`)) {
+          modelSelect.value = savedModel;
+        }
+
+        // Trigger change handler so any listeners react to the (possibly) new value
+        modelSelect.dispatchEvent(new Event('change'));
+
+        // refresh button state
+        refreshAIButtonState();
+      } catch (err) {
+        console.error('Errore recupero modelli:', err);
+        if (errorElement) {
+          errorElement.textContent = `Errore nel recupero dei modelli: ${err.message}`;
+          errorElement.style.display = 'block';
+        }
+      }
+    }
+
+    async function runVectorBuilder() {
+      const input = document.getElementById('vectorBuilderInput').value.trim();
+      const btn = document.getElementById('vectorBuilderBtn');
+      const resultBox = document.getElementById('vectorBuilderResult');
+      const output = document.getElementById('vectorBuilderOutput');
+      const errorBox = document.getElementById('vectorBuilderError');
+
+      if (!input) {
+        errorBox.textContent = 'Inserisci una descrizione dell\'incidente.';
+        errorBox.style.display = 'block';
+        return;
+      }
+
+      const apiKey = localStorage.getItem('aiApiKey');
+      const apiUrl = (localStorage.getItem('aiApiUrl') || '').replace(/\/+$/,'');
+      const model = localStorage.getItem('aiModel');
+      const provider = localStorage.getItem('aiProvider') || 'openai';
+
+      if (!apiKey || !model) {
+        errorBox.textContent = 'Configura API Key e Modello nelle impostazioni.';
+        errorBox.style.display = 'block';
+        return;
+      }
+
+      const origText = btn.innerHTML;
+      btn.disabled = true;
+      btn.innerHTML = 'Generazione in corso...';
+      errorBox.style.display = 'none';
+      resultBox.style.display = 'none';
+
+      try {
+        // Build a mapping taxonomy summary for the prompt
+        let taxSummary = "CATEGORIES AND OPTIONS (category: key - description):\n";
+        for (const cat in descriptions.options) {
+          taxSummary += `- ${cat}:\n`;
+          for (const opt in descriptions.options[cat]) {
+            taxSummary += `  * ${opt}: ${descriptions.options[cat][opt].substring(0, 150)}...\n`;
+          }
+        }
+
+        const systemPrompt = `Sei un esperto di cybersecurity esperto nella tassonomia ACN (Agenzia per la Cybersicurezza Nazionale italiana). 
+Analizza la descrizione fornita e restituisci un oggetto JSON che mappi le categorie della tassonomia ai valori più appropriati.
+REGOLE:
+1. Restituisci SOLO un oggetto JSON valido.
+2. Usa le chiavi di categoria e i codici di opzione forniti.
+3. Se un campo non è deducibile, ometti la chiave o usa null.
+JSON ATTESO: { "categoryName": "optionCode", ... }
+
+TAXONOMY DATA:
+${taxSummary}`;
+
+        const userPrompt = `DESCRIZIONE INCIDENTE: ${input}`;
+
+        let url, body, headers = { 'Content-Type': 'application/json' };
+
+        if (provider === 'openai') {
+          url = `${apiUrl}/chat/completions`;
+          headers['Authorization'] = `Bearer ${apiKey}`;
+          body = JSON.stringify({
+            model,
+            messages: [
+              { role: "system", content: systemPrompt },
+              { role: "user", content: userPrompt }
+            ],
+            temperature: 0.1,
+            response_format: { type: "json_object" }
+          });
+        } else if (provider === 'google') {
+          const base = apiUrl.includes('/v1') ? apiUrl : `${apiUrl}/v1beta`;
+          url = `${base}/models/${model}:generateContent?key=${apiKey}`;
+          body = JSON.stringify({
+            contents: [{ parts: [{ text: systemPrompt + "\n\n" + userPrompt }] }],
+            generationConfig: { responseMimeType: "application/json" }
+          });
+        } else if (provider === 'claude') {
+          url = `${apiUrl}/v1/messages`;
+          headers['x-api-key'] = apiKey;
+          headers['anthropic-version'] = '2023-06-01';
+          headers['anthropic-dangerous-direct-browser-access'] = 'true';
+          body = JSON.stringify({
+            model,
+            system: systemPrompt,
+            messages: [{ role: 'user', content: userPrompt }],
+            max_tokens: 1000
+          });
+        }
+
+        const resp = await fetch(url, { method: 'POST', headers, body });
+        if (!resp.ok) {
+          const errData = await resp.json().catch(()=>({}));
+          throw new Error(errData.error?.message || `HTTP ${resp.status}`);
+        }
+
+        const data = await resp.json();
+        let jsonStr = '';
+        if (provider === 'openai') jsonStr = data.choices[0].message.content;
+        else if (provider === 'google') jsonStr = data.candidates[0].content.parts[0].text;
+        else if (provider === 'claude') jsonStr = data.content[0].text;
+
+        // Clean JSON if needed (sometimes LLMs wrap in code blocks)
+        jsonStr = jsonStr.replace(/```json/g, '').replace(/```/g, '').trim();
+        const mapping = JSON.parse(jsonStr);
+
+        // Store for application
+        window._pendingAIMapping = mapping;
+
+        // Show visualization of result
+        output.innerHTML = '';
+        for (const cat in mapping) {
+           if (mapping[cat]) {
+             const optText = (descriptions.options[cat] && descriptions.options[cat][mapping[cat]]) ? descriptions.options[cat][mapping[cat]] : mapping[cat];
+             const div = document.createElement('div');
+             div.className = 'vb-result-item';
+             div.innerHTML = `<strong>${escapeHtml(cat)}:</strong> ${escapeHtml(optText)}`;
+             output.appendChild(div);
+           }
+        }
+
+        resultBox.style.display = 'block';
+
+      } catch (err) {
+        console.error('Vector Builder Error:', err);
+        errorBox.textContent = `Errore: ${err.message}`;
+        errorBox.style.display = 'block';
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = origText;
+      }
+    }
+
+    function applyAIMapping() {
+      if (!window._pendingAIMapping) return;
+      const mapping = window._pendingAIMapping;
+      const form = document.getElementById('acnForm');
+      
+      // Update all selects to match exactly what AI provided (clearing non-matches)
+      const selects = form.querySelectorAll('select');
+      selects.forEach(sel => {
+        if (mapping[sel.name]) {
+          sel.value = mapping[sel.name];
+        } else {
+          sel.value = '';
+        }
+      });
+      
+      updateHighlights();
+      // Ensure nothing is dimmed and everything is fully interactable
+      document.querySelectorAll('.dimmed').forEach(el => el.classList.remove('dimmed'));
+      
+      updateDescriptions();
+      evaluateReportingRequirement();
+      
+      // Navigate to mapping tab for review
+      showTab('tab-manual');
+      
+      const coreTabs = document.querySelector('.manual-tabs');
+      if (coreTabs) coreTabs.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function initializeAI() {
+      console.log('Initializing AI Global settings...');
+      const saveConfigBtn = document.getElementById('saveAIConfig');
+      const getModelsBtn = document.getElementById('getModelsBtn');
+      const modelSelect = document.getElementById('aiModel');
+      const generateSummaryBtn = document.getElementById('generateSummary');
+      const providerSelect = document.getElementById('aiProvider');
+      const apiKeyInput = document.getElementById('apiKey');
+      const apiUrlInput = document.getElementById('apiUrl');
+      const errorElement = document.getElementById('aiError');
+
+      // Load saved configuration
+      const savedProvider = localStorage.getItem('aiProvider') || 'openai';
+      const savedApiKey = localStorage.getItem('aiApiKey');
+      const savedApiUrl = localStorage.getItem('aiApiUrl');
+      const savedModel = localStorage.getItem('aiModel');
+
+      if (providerSelect) {
+        providerSelect.value = savedProvider;
+        providerSelect.addEventListener('change', (e) => {
+          const val = e.target.value;
+          if (val === 'google') apiUrlInput.value = 'https://generativelanguage.googleapis.com';
+          else if (val === 'openai') apiUrlInput.value = 'https://api.openai.com/v1';
+          else if (val === 'claude') apiUrlInput.value = 'https://api.anthropic.com/v1';
+        });
+      }
+      if (apiKeyInput) apiKeyInput.value = savedApiKey || '';
+      if (apiUrlInput) apiUrlInput.value = savedApiUrl || (savedProvider === 'google' ? 'https://generativelanguage.googleapis.com' : 'https://api.openai.com/v1');
+
+      if (saveConfigBtn) {
+        saveConfigBtn.addEventListener('click', () => {
+          const provider = providerSelect ? providerSelect.value : 'openai';
+          const apiKey = apiKeyInput ? apiKeyInput.value : '';
+          const apiUrl = apiUrlInput ? apiUrlInput.value : '';
+          const model = modelSelect ? modelSelect.value : '';
+
+          localStorage.setItem('aiProvider', provider);
+          localStorage.setItem('aiApiKey', apiKey);
+          localStorage.setItem('aiApiUrl', apiUrl);
+          localStorage.setItem('aiModel', model);
+
+          const origText = saveConfigBtn.textContent;
+          saveConfigBtn.textContent = 'Configurazione Salvata! ✓';
+          setTimeout(() => {
+            saveConfigBtn.textContent = origText;
+            document.getElementById('settingsModal').style.display = 'none';
+          }, 1000);
+        });
+      }
+
+      // Modal Toggle Logic
+      const openSettingsBtn = document.getElementById('openSettings');
+      const closeSettingsBtn = document.getElementById('closeSettings');
+      const settingsModal = document.getElementById('settingsModal');
+
+      if (openSettingsBtn && settingsModal) {
+        openSettingsBtn.addEventListener('click', () => {
+          settingsModal.style.display = 'flex';
+        });
+      }
+
+      if (closeSettingsBtn && settingsModal) {
+        closeSettingsBtn.addEventListener('click', () => {
+          settingsModal.style.display = 'none';
+        });
+      }
+
+      // Close modal on outside click
+      window.addEventListener('click', (e) => {
+        if (e.target === settingsModal) {
+          settingsModal.style.display = 'none';
+        }
+      });
+
+      if (getModelsBtn) {
+        getModelsBtn.addEventListener('click', () => {
+          // clear previous error and fetch models using the current inputs
+          if (errorElement) errorElement.style.display = 'none';
+          loadAvailableModels();
+        });
+      }
+
+      if (modelSelect) {
+        modelSelect.addEventListener('change', (e) => {
+          const hasModel = !!e.target.value;
+          if (hasModel) localStorage.setItem('aiModel', e.target.value);
+          refreshAIButtonState();
+        });
+
+        // Initial check on load
+        refreshAIButtonState();
+      }
+
+      if (generateSummaryBtn) {
+        // ensure generate won't run if no model selected
+        generateSummaryBtn.addEventListener('click', () => {
+          const selectedModel = modelSelect ? modelSelect.value : '';
+          if (!selectedModel) {
+            if (errorElement) {
+              errorElement.textContent = 'Seleziona prima un modello (usa "Recupera Modelli").';
+              errorElement.style.display = 'block';
+            }
+            return;
+          }
+          // call summary generator
+          generateSummary();
+        });
+      }
+
+      // Vector Builder setup
+      const vectorBuilderBtn = document.getElementById('vectorBuilderBtn');
+      if (vectorBuilderBtn) {
+        vectorBuilderBtn.addEventListener('click', runVectorBuilder);
+      }
+      const applyBuilderBtn = document.getElementById('applyVectorBuilderBtn');
+      if (applyBuilderBtn) {
+        applyBuilderBtn.addEventListener('click', applyAIMapping);
+      }
+    }
+
+    // -- new: safe escape and simple markdown renderer
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+    }
+
+    function renderMarkdown(md) {
+      if (!md) return '';
+      // escape first
+      let out = escapeHtml(md);
+
+      // code fences ```lang\n...\n```
+      out = out.replace(/```(\w+)?\n([\s\S]*?)```/g, (m, lang, code) => {
+        const escaped = escapeHtml(code);
+        return `<pre><code class="language-${lang || 'plain'}">${escaped}</code></pre>`;
+      });
+
+      // inline code `code`
+      out = out.replace(/`([^`]+)`/g, '<code>$1</code>');
+
+      // headings #### ... to <h4>
+      out = out.replace(/^####\s*(.*)$/gm, '<h4>$1</h4>');
+      out = out.replace(/^###\s*(.*)$/gm, '<h3>$1</h3>');
+      out = out.replace(/^##\s*(.*)$/gm, '<h2>$1</h2>');
+      out = out.replace(/^#\s*(.*)$/gm, '<h1>$1</h1>');
+
+      // bold **text** and __text__
+      out = out.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+      out = out.replace(/__(.+?)__/g, '<strong>$1</strong>');
+
+      // italic *text* or _text_
+      out = out.replace(/(^|[^*])\*(?!\*)(.+?)\*(?!\*)/g, '$1<em>$2</em>');
+      out = out.replace(/(^|[^_])_(?!_)(.+?)_(?!_)/g, '$1<em>$2</em>');
+
+      // links [text](url)
+      out = out.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (match, text, url) => {
+        const cleanUrl = url.replace(/["'<>]/g, '');
+        const lowerUrl = cleanUrl.trim().toLowerCase();
+        if (lowerUrl.startsWith('javascript:') || lowerUrl.startsWith('data:') || lowerUrl.startsWith('vbscript:')) {
+          return `<a href="#blocked" title="Blocked unsafe link">${text}</a>`;
+        }
+        return `<a href="${cleanUrl}" target="_blank" rel="noopener noreferrer">${text}</a>`;
+      });
+
+      // unordered lists (- or *) -> wrap as <ul><li>...</li></ul>
+      out = out.replace(/(^|\n)(?:[ \t]*[-*]\s.+(\n|$))+/g, block => {
+        const items = block.trim().split(/\n/).map(l => l.replace(/^[\s]*[-*]\s+/, ''));
+        return '\n<ul>' + items.map(i => `<li>${i}</li>`).join('') + '</ul>\n';
+      });
+
+      // ordered lists 1. 2.
+      out = out.replace(/(^|\n)(?:[ \t]*\d+\.\s.+(\n|$))+/g, block => {
+        const items = block.trim().split(/\n/).map(l => l.replace(/^[\s]*\d+\.\s+/, ''));
+        return '\n<ol>' + items.map(i => `<li>${i}</li>`).join('') + '</ol>\n';
+      });
+
+      // paragraphs: ensure lines separated by double newline are paragraphs
+      out = out.replace(/\n{2,}/g, '\n\n'); // normalize
+      const parts = out.split('\n\n').map(p => {
+        if (/^<(h|ul|ol|pre|blockquote|div|table|p)/.test(p.trim())) return p;
+        return `<p>${p}</p>`;
+      });
+      return parts.join('\n');
+    }
+    // -- end renderer
+
+    async function generateSummary() {
+      const generateBtn = document.getElementById('generateSummary');
+      const apiKey = document.getElementById('apiKey')?.value || localStorage.getItem('aiApiKey');
+      const apiUrl = document.getElementById('apiUrl')?.value || localStorage.getItem('aiApiUrl');
+      const model = document.getElementById('aiModel')?.value || localStorage.getItem('aiModel');
+      const summaryContent = document.getElementById('summaryContent');
+      const errorElement = document.getElementById('aiError');
+      const aiConfigEl = document.getElementById('aiConfig');
+
+      if (!apiKey) {
+        if (errorElement) {
+          errorElement.textContent = 'Inserisci la chiave API e clicca "Recupera Modelli" prima di procedere.';
+          errorElement.style.display = 'block';
+        }
+        if (aiConfigEl) aiConfigEl.style.display = 'block';
+        return;
+      }
+      if (!model) {
+        if (errorElement) {
+          errorElement.textContent = 'Seleziona un modello.';
+          errorElement.style.display = 'block';
+        }
+        return;
+      }
+
+      // show generating state
+      const origBtnHtml = generateBtn ? generateBtn.innerHTML : null;
+      if (generateBtn) {
+        generateBtn.disabled = true;
+        generateBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:8px;animation:spin 1s linear infinite"><circle cx="12" cy="12" r="10"></circle></svg> Generating...';
+      }
+      // small spinner animation style (only added once)
+      if (!document.getElementById('spinner-style')) {
+        const s = document.createElement('style');
+        s.id = 'spinner-style';
+        s.textContent = '@keyframes spin{to{transform:rotate(360deg)}}';
+        document.head.appendChild(s);
+      }
+
+      try {
+        if (errorElement) errorElement.style.display = 'none';
+        if (summaryContent) summaryContent.innerHTML = '<p class="text-muted"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:8px;animation:spin 1s linear infinite"><circle cx="12" cy="12" r="10"></circle></svg> Generating summary...</p>';
+
+        const provider = localStorage.getItem('aiProvider') || 'openai';
+        const apiKey = document.getElementById('apiKey')?.value || localStorage.getItem('aiApiKey');
+        const apiUrl = (document.getElementById('apiUrl')?.value || localStorage.getItem('aiApiUrl') || '').replace(/\/+$/, '');
+        const model = document.getElementById('aiModel')?.value || localStorage.getItem('aiModel');
+
+        if (!apiKey || !model) throw new Error('Mancano le configurazioni AI (Chiave o Modello).');
+
+        // collect selections
+        const selections = [];
+        const selects = document.getElementById('acnForm').querySelectorAll('select');
+        selects.forEach(select => {
+          if (select.value) {
+            selections.push({
+              category: select.name,
+              selection: select.options[select.selectedIndex].text,
+              description: (descriptions.options && descriptions.options[select.name]) ? (descriptions.options[select.name][select.value] || '') : ''
+            });
+          }
+        });
+
+        const vectorStr = document.getElementById('vectorString')?.textContent || '';
+        const userPrompt = `Analizza questo incidente cyber mappato secondo la tassonomia ACN e fornisci un riassunto narrativo conciso (massimo 200 parole).
+Vettore ACN: ${vectorStr}
+Dettagli Selezionati:
+${selections.map(s => `- ${s.category}: ${s.selection} (${s.description})`).join('\n')}
+
+Fornisci una sintesi che includa la natura dell'attacco, l'impatto potenziale e le implicazioni di sicurezza.`;
+
+        let url, body, headers = { 'Content-Type': 'application/json' };
+
+        if (provider === 'openai') {
+          url = `${apiUrl}/chat/completions`;
+          headers['Authorization'] = `Bearer ${apiKey}`;
+          body = JSON.stringify({
+            model,
+            messages: [{ role: "user", content: userPrompt }],
+            temperature: 0.7
+          });
+        } else if (provider === 'google') {
+          // Robust Google URL: ensure /v1beta is present if not already in apiUrl
+          const base = apiUrl.includes('/v1') ? apiUrl : `${apiUrl}/v1beta`;
+          url = `${base}/models/${model}:generateContent?key=${apiKey}`;
+          body = JSON.stringify({
+            contents: [{ parts: [{ text: userPrompt }] }]
+          });
+        } else if (provider === 'claude') {
+          url = `${apiUrl}/v1/messages`;
+          headers['x-api-key'] = apiKey;
+          headers['anthropic-version'] = '2023-06-01';
+          headers['anthropic-dangerous-direct-browser-access'] = 'true';
+          body = JSON.stringify({
+            model,
+            messages: [{ role: 'user', content: userPrompt }],
+            max_tokens: 1024
+          });
+        }
+
+        const response = await fetch(url, { method: 'POST', headers, body });
+
+        if (!response.ok) {
+          const errData = await response.json().catch(() => ({}));
+          const msg = (errData.error && errData.error.message) ? errData.error.message : (errData.message || `HTTP ${response.status}`);
+          throw new Error(msg);
+        }
+
+        const data = await response.json();
+        let aiText = '';
+        if (provider === 'openai') {
+          aiText = data.choices?.[0]?.message?.content || '';
+        } else if (provider === 'google') {
+          if (data.candidates && data.candidates[0] && data.candidates[0].content) {
+            aiText = data.candidates[0].content.parts[0].text;
+          } else {
+            throw new Error('Google Gemini non ha generato contenuti (possibile blocco filtri sicurezza).');
+          }
+        } else if (provider === 'claude') {
+          aiText = data.content?.[0]?.text || '';
+        }
+
+        if (!aiText) throw new Error('Risposta AI vuota.');
+        if (summaryContent) summaryContent.innerHTML = `<div class="ai-summary">${renderMarkdown(aiText)}</div>`;
+      } catch (err) {
+        console.error('Error:', err);
+        if (summaryContent) {
+          summaryContent.innerHTML = `
+                <div style="color:var(--danger); padding:1rem; background:rgba(220,38,38,0.1); border-radius:var(--radius-sm); border:1px solid var(--danger);">
+                    <strong>Errore Generazione Sintesi:</strong><br>
+                    <span style="font-size:0.85rem;">${escapeHtml(err.message)}</span>
+                </div>
+            `;
+        }
+      } finally {
+        // restore button
+        if (generateBtn) {
+          generateBtn.disabled = false;
+          if (origBtnHtml !== null) generateBtn.innerHTML = origBtnHtml;
+        }
+      }
+    }
+
+    // -- Feature 1: Reporting Evaluation Logic
+    function evaluateReportingRequirement() {
+      const form = document.getElementById('acnForm');
+      const severity = form.elements['severity'].value;
+      const impact = form.elements['impact'].value;
+      const evalBox = document.getElementById('reportingEvaluation');
+      const evalBadge = document.getElementById('evalBadge');
+      const evalIcon = document.getElementById('evalIcon');
+      const evalVerdict = document.getElementById('evalVerdict');
+      const evalNormRef = document.getElementById('evalNormRef');
+      const evalReason = document.getElementById('evalReason');
+      const evalNorms = document.getElementById('evalNorms');
+
+      if (!severity && !impact) {
+        evalBox.style.display = 'none';
+        return;
+      }
+
+      evalBox.style.display = 'block';
+      // Reset classes
+      evalBadge.className = 'eval-badge';
+
+      let requiresNotification = false;
+      let reasonText = '';
+
+      // Basic rule: High/Medium Severity AND some Impact usually triggers NIS2 reporting
+      if ((severity === 'HI' || severity === 'ME') && impact !== 'NO' && impact !== '') {
+        requiresNotification = true;
+        evalBadge.classList.add('eval-notify');
+        evalIcon.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>';
+        evalVerdict.textContent = 'Notifica Obbligatoria Presunta';
+        reasonText = 'L\'incidente presenta un Livello di Gravità (Severity) Medio o Alto associato a un Impatto effettivo. Secondo le direttive, gli incidenti con impatto significativo sulla fornitura dei servizi richiedono una notifica tempestiva al CSIRT Italia.';
+      } else if (severity === 'LO' || (severity && impact === 'NO')) {
+        evalBadge.classList.add('eval-safe');
+        evalIcon.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>';
+        evalVerdict.textContent = 'Notifica Non Obbligatoria';
+        reasonText = 'L\'incidente presenta un Livello di Gravità Basso o Nessun Impatto. Generalmente, non rientra nelle soglie di notifica obbligatoria, ma si consiglia la registrazione interna e la valutazione per notifica volontaria.';
+      } else {
+        evalBadge.classList.add('eval-review');
+        evalIcon.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>';
+        evalVerdict.textContent = 'Valutazione Necessaria';
+        reasonText = 'Compilare in modo completo i campi Severity e Impact per ottenere una stima sull\'obbligo di notifica. La valutazione si basa sui parametri di base dell\'incidente secondo la tassonomia ACN.';
+      }
+
+      evalNormRef.textContent = 'Rif: Direttiva NIS2 / D.Lgs. 138/2024';
+      evalReason.textContent = reasonText;
+      evalNorms.innerHTML = '<strong>Art. 23 (NIS2) / Art. 25 (D.Lgs. 138/2024):</strong> Obbligo di notifica di un incidente significativo (preallarme in 24h, notifica dell\'incidente in 72h). Un incidente è significativo se ha causato o può causare una grave perturbazione operativa o perdite finanziarie, oppure se ha o può avere ripercussioni su altre persone fisiche o giuridiche.';
+    }
+
+    // -- Global Tab Panel Switch Logic Initializer
+    document.addEventListener('DOMContentLoaded', () => {
+      const tabs = document.querySelectorAll('.nav-tab');
+      tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          showTab(tab.dataset.target);
+        });
+      });
+      // Set default tab if none active
+      if (!document.querySelector('.nav-tab.active')) {
+        showTab('tab-manual');
+      }
+    });
+
+  </script>
+  </section>
+  </main>
+</body>
+
+</html>
